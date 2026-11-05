@@ -1,0 +1,21 @@
+# Local configuration and PocketBase runtime data
+.env
+.env.*
+!.env.example
+backend/bin/
+backend/pb_data/
+backend/.test-data/
+backend/backups/
+backend/demo_data/
+backend/.demo-credentials.json
+backend/deploy/secrets/
+backend/.release-validation/
+__pycache__/
+*.pyc
+frontend/node_modules/
+frontend/.next/
+frontend/.npm-cache/
+frontend/*.tsbuildinfo
+frontend/.qa/
+
+frontend/.verification/

@@ -1,0 +1,56 @@
+/* "Không gian của tôi" — features/workspace. Layout only. */
+.ws-grid { display:grid; grid-template-columns:minmax(0,1.45fr) minmax(320px,1fr); gap:20px; align-items:start; }
+.ws-side { display:flex; flex-direction:column; gap:20px; min-width:0; }
+@media (max-width:1100px) { .ws-grid { grid-template-columns:minmax(0,1fr); } }
+
+.ws-card { padding:18px 20px; display:flex; flex-direction:column; gap:14px; min-width:0; }
+.ws-card-head { display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+.ws-card-head h2 { display:flex; align-items:center; gap:8px; margin:0; font-size:16px; font-weight:700; color:#0a2b5c; }
+.ws-head-actions { display:flex; align-items:center; gap:8px; }
+.ws-head-actions strong { min-width:112px; text-align:center; font-size:14px; color:#0f1e36; }
+.ws-count { font-size:13px; color:#5b6b82; }
+.ws-add { display:inline-flex; align-items:center; gap:6px; }
+.ws-nav, .ws-icon { display:flex; align-items:center; justify-content:center; width:32px; height:32px; border:1px solid #dce6f2; border-radius:8px; background:#fff; color:#44546e; cursor:pointer; }
+.ws-nav:hover, .ws-icon:hover { background:#eef4fb; color:#0b3a75; }
+
+/* Calendar */
+.ws-month { display:grid; grid-template-columns:repeat(7,minmax(0,1fr)); gap:6px; }
+.ws-weekday { padding:4px 0; text-align:center; font-size:12px; font-weight:700; color:#5b6b82; }
+.ws-day { min-height:68px; padding:8px 10px; display:flex; flex-direction:column; justify-content:space-between; border:1px solid #e8eef6; border-radius:10px; background:#fff; font-size:13px; }
+.ws-day.empty { border-color:transparent; background:transparent; }
+.ws-day b { font-weight:600; color:#0f1e36; }
+.ws-day.today { border-color:#1d4e91; background:#eef4fc; }
+.ws-day.today b { color:#1d4e91; font-weight:700; }
+.ws-dots { display:flex; gap:4px; }
+.ws-dots i { width:6px; height:6px; border-radius:50%; background:#1d4e91; }
+.ws-dots i.green { background:#1f8a4c; }
+.ws-dots i.amber { background:#d98b0b; }
+.ws-upcoming { border-top:1px solid #e8eef6; padding-top:14px; }
+.ws-upcoming h3 { margin:0 0 10px; font-size:13px; font-weight:700; color:#5b6b82; }
+.ws-upcoming ul { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:8px; }
+.ws-upcoming li { display:grid; grid-template-columns:64px minmax(0,1fr) auto; align-items:center; gap:12px; padding:10px 12px; border-radius:10px; background:#f6f9fd; font-size:14px; }
+.ws-time { display:flex; align-items:center; gap:5px; font-weight:600; color:#0b3a75; }
+.ws-event-title { min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.ws-tag { padding:3px 10px; border-radius:999px; font-size:12px; font-weight:600; background:#e3edfb; color:#1d4e91; }
+.ws-tag.green { background:#dff3e7; color:#1f6f43; }
+.ws-tag.amber { background:#fbefd3; color:#8a5a06; }
+
+/* Saved quotes */
+.ws-quotes { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; }
+.ws-quotes li { display:grid; grid-template-columns:minmax(0,1fr) auto auto; align-items:center; gap:14px; padding:12px 0; border-top:1px solid #e8eef6; }
+.ws-quotes li:first-child { border-top:0; padding-top:0; }
+.ws-quote-main, .ws-quote-price { display:flex; flex-direction:column; gap:3px; min-width:0; }
+.ws-quote-main b { font-size:14px; color:#0f1e36; }
+.ws-quote-price { text-align:right; }
+.ws-quote-price strong { font-size:15px; color:#0b3a75; }
+.ws-quotes small { font-size:12.5px; color:#5b6b82; }
+.ws-row-actions { display:flex; gap:6px; }
+
+/* Notes */
+.ws-notes { display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:12px; }
+.ws-note { padding:14px; border-radius:12px; display:flex; flex-direction:column; gap:6px; min-height:116px; }
+.ws-note h3 { margin:0; font-size:14px; font-weight:700; color:#0f1e36; }
+.ws-note p { margin:0; font-size:13.5px; line-height:1.55; color:#33425a; }
+.ws-note.yellow { background:#fff6d6; }
+.ws-note.blue { background:#e6f0fd; }
+.ws-note.green { background:#e2f4ea; }

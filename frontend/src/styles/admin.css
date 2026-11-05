@@ -1,0 +1,488 @@
+.admin-shell {
+  min-height:100vh;
+  display:flex;
+  flex-wrap:wrap;
+  line-height:normal
+}
+.admin-sidebar {
+  flex:1 1 240px;
+  max-width:100%;
+  background:#0A2B5C;
+  padding:22px 14px;
+  display:flex;
+  flex-direction:column;
+  gap:24px
+}
+.sidebar-brand {
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:6px;
+  color:#fff;
+  padding:6px 0 4px
+}
+.sidebar-brand>span {
+  font-size:19px;
+  font-weight:700
+}
+.sidebar-brand small {
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:.08em;
+  color:#9FB6D8
+}
+.admin-sidebar nav {
+  display:flex;
+  flex-direction:column;
+  gap:4px
+}
+.nav {
+  display:flex;
+  align-items:center;
+  gap:12px;
+  min-height:44px;
+  padding:0 14px;
+  border-radius:8px;
+  color:#C6D5EB;
+  font-size:14px;
+  font-weight:500;
+  text-decoration:none
+}
+.nav:hover {
+  background:rgba(255,255,255,.08);
+  color:#fff;
+  text-decoration:none
+}
+.nav.on {
+  background:#1D4E91;
+  color:#fff
+}
+.nav svg {
+  flex-shrink:0
+}
+.sidebar-bottom {
+  margin-top:auto;
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+  border-top:1px solid #1D4E91;
+  padding-top:14px
+}
+/* "Bảng trắng" + "Không gian của tôi" sit right above the divider; they take over the push-to-bottom spacing. */
+/* The aside already adds a 24px gap; -10px leaves 14px, matching the padding below the line. */
+.sidebar-tools { margin-top:auto; margin-bottom:-10px; flex-shrink:0; display:flex; flex-direction:column; gap:4px }
+.sidebar-tools + .sidebar-bottom { margin-top:0 }
+.sidebar-tools button.nav { width:100%; border:0; background:transparent; text-align:left; cursor:pointer; font-family:inherit }
+.sidebar-bottom button {
+  width:100%;
+  border:0;
+  background:transparent;
+  text-align:left
+}
+.admin-main {
+  flex:999 1 560px;
+  min-width:0;
+  display:flex;
+  flex-direction:column
+}
+.admin-header {
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:14px;
+  padding:14px 28px;
+  background:#fff;
+  border-bottom:1px solid #DCE6F2
+}
+.header-search {
+  flex:1 1 280px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  min-height:44px;
+  padding:0 14px;
+  border:1px solid #DCE6F2;
+  border-radius:22px;
+  background:#F5F8FC;
+  color:#5B6B82
+}
+.header-search input {
+  flex:1;
+  min-width:0;
+  border:0;
+  background:transparent;
+  font-size:14px;
+  outline:none;
+  color:#0F1E36
+}
+.notification-wrap {
+  position:relative
+}
+.notification-button {
+  position:relative;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:44px;
+  height:44px;
+  border:0;
+  border-radius:8px;
+  background:transparent;
+  color:#0A2B5C
+}
+.notification-button>span {
+  position:absolute;
+  top:6px;
+  right:6px;
+  min-width:18px;
+  height:18px;
+  border-radius:9px;
+  background:#B3261E;
+  color:#fff;
+  font-size:10.5px;
+  font-weight:700;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:0 4px
+}
+.staff-profile {
+  display:flex;
+  align-items:center;
+  gap:10px
+}
+.avatar {
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:38px;
+  height:38px;
+  border-radius:19px;
+  background:#1D4E91;
+  color:#fff;
+  font-size:13px;
+  font-weight:700
+}
+.staff-profile>span:last-child {
+  display:flex;
+  flex-direction:column
+}
+.staff-profile b {
+  font-size:14px
+}
+.staff-profile small {
+  font-size:12px
+}
+.dashboard-content {
+  padding:28px;
+  display:flex;
+  flex-direction:column;
+  gap:20px
+}
+.dashboard-title {
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:space-between;
+  align-items:flex-end;
+  gap:12px
+}
+.dashboard-title h1 {
+  font-size:28px;
+  font-weight:700;
+  color:#0A2B5C
+}
+.dashboard-title p {
+  margin-top:6px;
+  font-size:14px;
+  color:#5B6B82
+}
+.dashboard-actions {
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px
+}
+.stats-grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:16px
+}
+.dashboard-panels {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(440px,1fr));
+  gap:20px
+}
+.data-panel {
+  padding:18px 20px;
+  min-width:0
+}
+.panel-heading {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:6px;
+  gap:8px
+}
+.panel-heading h2 {
+  font-size:17px;
+  font-weight:700
+}
+.panel-heading a {
+  font-size:13px;
+  font-weight:600;
+  white-space:nowrap
+}
+.panel-heading>span {
+  font-size:12.5px;
+  color:#5B6B82
+}
+.data-row {
+  display:grid;
+  align-items:center;
+  gap:12px;
+  padding:11px 0;
+  border-top:1px solid #E8EEF6;
+  font-size:13.5px
+}
+.latest-row {
+  grid-template-columns:56px minmax(0,1fr) 90px 92px
+}
+.carrier-badge {
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:52px;
+  height:30px;
+  border-radius:6px;
+  font-size:10.5px;
+  font-weight:800;
+  color:#fff
+}
+.route-label {
+  min-width:0
+}
+.route-label>div {
+  font-weight:600
+}
+.data-row small {
+  font-size:12px
+}
+.top-row {
+  grid-template-columns:28px minmax(0,1fr) 70px
+}
+.top-route {
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  gap:6px
+}
+.top-route strong {
+  font-weight:600
+}
+.bar-track {
+  height:6px;
+  border-radius:3px;
+  background:#EAF1FB;
+  display:block
+}
+.bar-track>span {
+  display:block;
+  height:6px;
+  border-radius:3px;
+  background:#1E5FC2
+}
+.changes-row {
+  grid-template-columns:56px minmax(0,1fr) 140px 84px
+}
+.price-change {
+  text-align:right;
+  font-size:13px
+}
+.price-change>span {
+  color:#5B6B82
+}
+.change-badge {
+  justify-self:end;
+  font-size:12px;
+  font-weight:700;
+  padding:3px 9px;
+  border-radius:10px;
+  white-space:nowrap
+}
+.increase {
+  background:#FDECEC;
+  color:#B3261E
+}
+.decrease {
+  background:#E3F4EA;
+  color:#17663A
+}
+.empty-state {
+  padding:24px 0;
+  font-size:13px;
+  color:#5B6B82
+}
+.notification-panel {
+  position:absolute;
+  right:0;
+  top:50px;
+  width:360px;
+  max-width:85vw;
+  background:#fff;
+  border:1px solid #DCE6F2;
+  border-radius:12px;
+  padding:18px;
+  box-shadow:0 8px 28px #0A2B5C22;
+  z-index:10
+}
+.notification-panel h2 {
+  font-size:17px;
+  font-weight:700;
+  margin-bottom:10px
+}
+.notification-row {
+  display:flex;
+  gap:12px;
+  padding:12px 0;
+  border-top:1px solid #E8EEF6;
+  font-size:13px
+}
+.notification-row small {
+  display:block;
+  margin-top:4px
+}
+.search-status {
+  font-size:13px;
+  color:#5B6B82
+}
+
+@media(max-width:850px) {
+  .admin-sidebar {
+  flex-basis:100%;
+  gap:16px
+}
+.sidebar-brand {
+  flex-direction:row;
+  justify-content:center
+}
+.admin-sidebar nav {
+  flex-direction:row;
+  flex-wrap:wrap
+}
+.sidebar-bottom {
+  margin-top:0;
+  flex-direction:row
+}
+.dashboard-panels {
+  grid-template-columns:minmax(0,1fr)
+}
+.admin-header {
+  padding:14px 20px
+}
+.dashboard-content {
+  padding:20px
+}
+
+}
+@media(max-width:520px) {
+  .stats-grid {
+  grid-template-columns:1fr
+}
+.admin-header {
+  gap:10px
+}
+.header-search {
+  flex-basis:100%
+}
+.dashboard-content {
+  padding:16px
+}
+.data-panel {
+  padding:16px 12px
+}
+.latest-row {
+  grid-template-columns:52px minmax(0,1fr) 74px;
+  gap:8px
+}
+.latest-row>small:last-child {
+  grid-column:2/4;
+  text-align:left;
+  margin-top:-5px
+}
+.changes-row {
+  grid-template-columns:52px minmax(0,1fr) 74px;
+  gap:8px
+}
+.price-change {
+  grid-column:2;
+  grid-row:2;
+  text-align:left
+}
+.change-badge {
+  grid-column:3;
+  grid-row:1/3
+}
+.panel-heading {
+  align-items:flex-start;
+  flex-wrap:wrap
+}
+.panel-heading h2 {
+  font-size:16px
+}
+.nav {
+  padding:0 10px;
+  font-size:13px
+}
+.notification-panel {
+  right:-100px
+}
+
+}
+
+
+/* The viewport owns the shell; each module owns its content scroll. */
+.admin-shell { height:100dvh; min-height:0; overflow:hidden; flex-wrap:nowrap; }
+.admin-sidebar { flex:0 0 224px; min-height:0; overflow:hidden; }
+.admin-sidebar nav { min-height:0; overflow:auto; }
+.admin-main,.rates-main { min-height:0; overflow:hidden; }
+.dashboard-content,.op-content,.rates-content { min-height:0; overflow:auto; flex:1; }
+.admin-shell *,dialog * { scrollbar-width:none; }
+.admin-shell *::-webkit-scrollbar,dialog *::-webkit-scrollbar { display:none; }
+@media(max-width:850px) {
+ .admin-shell { flex-wrap:nowrap; }
+ .admin-sidebar { flex:0 0 190px; gap:16px; padding:18px 10px; }
+ .sidebar-brand { flex-direction:column; }
+ .admin-sidebar nav,.sidebar-bottom { flex-direction:column; flex-wrap:nowrap; }
+ .sidebar-bottom { margin-top:auto; flex-shrink:0; }
+}
+@media(max-width:520px) { .admin-sidebar { flex-basis:148px; } .sidebar-brand>span { font-size:16px; } }
+/* Shared carrier logo — components/ui/carrier-logo.tsx. Global so every page sizes it the same. */
+.carrier-logo {
+  display:block;
+  flex:none;
+  max-width:none;
+  object-fit:contain
+}
+.carrier-logo-sm { width:48px; height:28px; min-width:48px }
+.carrier-logo-md { width:52px; height:30px; min-width:52px }
+.carrier-logo-lg { width:64px; height:30px; min-width:64px }
+/* Status badges — solid background + white text everywhere (same style as "Hết hạn").
+   Prefixed with `span` so these win over the page stylesheets loaded later. */
+:root {
+  --status-green:#1e7a46;
+  --status-orange:#c26a00;
+  --status-red:#b3261e;
+  --status-blue:#1e4f91;
+}
+span.rate-status,
+span.import-result,
+span.op-badge { color:#fff; font-weight:700; }
+span.rate-status.valid,
+span.import-result.valid,
+span.op-badge.green { background:var(--status-green); color:#fff; }
+span.rate-status.soon { background:var(--status-orange); color:#fff; }
+span.rate-status.expired,
+span.import-result.import-error,
+span.op-badge.red { background:var(--status-red); color:#fff; }
+span.rate-status.neutral,
+span.import-result.neutral,
+span.op-badge { background:var(--status-blue); color:#fff; }

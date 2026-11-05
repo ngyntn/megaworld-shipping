@@ -1,0 +1,80 @@
+code|name|country_code|region|can_be_pol|unlocode
+CAT_LAI|Cát Lái|VN|vietnam|true|VNCLI
+CAI_MEP|Cái Mép|VN|vietnam|true|VNTOT
+THI_VAI|Thị Vải|VN|vietnam|true|
+HAI_PHONG|Hải Phòng|VN|vietnam|true|VNHPH
+LACH_HUYEN|Lạch Huyện|VN|vietnam|true|
+DINH_VU|Đình Vũ|VN|vietnam|true|
+USLAX|Los Angeles|US|north_america|false|
+USLGB|Long Beach|US|north_america|false|
+USOAK|Oakland|US|north_america|false|
+USSEA|Seattle|US|north_america|false|
+USTIW|Tacoma|US|north_america|false|
+USNYC|New York / New Jersey|US|north_america|false|
+USSAV|Savannah|US|north_america|false|
+USCHS|Charleston|US|north_america|false|
+USHOU|Houston|US|north_america|false|
+USORF|Norfolk|US|north_america|false|
+CAVAN|Vancouver|CA|north_america|false|
+CAPRR|Prince Rupert|CA|north_america|false|
+CAMTR|Montreal|CA|north_america|false|
+CAHAL|Halifax|CA|north_america|false|
+NLRTM|Rotterdam|NL|europe|false|
+BEANR|Antwerp|BE|europe|false|
+DEHAM|Hamburg|DE|europe|false|
+DEBRV|Bremerhaven|DE|europe|false|
+FRLEH|Le Havre|FR|europe|false|
+GBFXT|Felixstowe|GB|europe|false|
+GBSOU|Southampton|GB|europe|false|
+GBLGP|London Gateway|GB|europe|false|
+ESBCN|Barcelona|ES|europe|false|
+ESVLC|Valencia|ES|europe|false|
+ESALG|Algeciras|ES|europe|false|
+ITGOA|Genoa|IT|europe|false|
+ITSPE|La Spezia|IT|europe|false|
+ITTRS|Trieste|IT|europe|false|
+PLGDN|Gdansk|PL|europe|false|
+SIKOP|Koper|SI|europe|false|
+CNSHA|Shanghai|CN|east_asia|false|
+CNNGB|Ningbo|CN|east_asia|false|
+CNTAO|Qingdao|CN|east_asia|false|
+CNTSN|Tianjin|CN|east_asia|false|
+CNDLC|Dalian|CN|east_asia|false|
+CNXMN|Xiamen|CN|east_asia|false|
+CNSZX|Shenzhen|CN|east_asia|false|
+CNYTN|Yantian|CN|east_asia|false|
+CNSHK|Shekou|CN|east_asia|false|
+CNNSA|Nansha|CN|east_asia|false|
+HKHKG|Hong Kong|HK|east_asia|false|
+TWKHH|Kaohsiung|TW|east_asia|false|
+TWKEL|Keelung|TW|east_asia|false|
+TWTXG|Taichung|TW|east_asia|false|
+KRPUS|Busan|KR|east_asia|false|
+KRINC|Incheon|KR|east_asia|false|
+JPTYO|Tokyo|JP|east_asia|false|
+JPYOK|Yokohama|JP|east_asia|false|
+JPOSA|Osaka|JP|east_asia|false|
+JPUKB|Kobe|JP|east_asia|false|
+JPNGO|Nagoya|JP|east_asia|false|
+SGSIN|Singapore|SG|southeast_asia|false|
+MYPKG|Port Klang|MY|southeast_asia|false|
+MYTPP|Tanjung Pelepas|MY|southeast_asia|false|
+THLCH|Laem Chabang|TH|southeast_asia|false|
+THBKK|Bangkok|TH|southeast_asia|false|
+IDJKT|Jakarta|ID|southeast_asia|false|
+IDSUB|Surabaya|ID|southeast_asia|false|
+PHMNL|Manila|PH|southeast_asia|false|
+AEJEA|Jebel Ali|AE|middle_east|false|
+AEAUH|Abu Dhabi|AE|middle_east|false|
+SADMM|Dammam|SA|middle_east|false|
+SAJED|Jeddah|SA|middle_east|false|
+QAHMD|Hamad|QA|middle_east|false|
+INNSA|Nhava Sheva|IN|india|false|
+INMUN|Mundra|IN|india|false|
+INMAA|Chennai|IN|india|false|
+INCCU|Kolkata|IN|india|false|
+AUSYD|Sydney|AU|australia|false|
+AUMEL|Melbourne|AU|australia|false|
+AUBNE|Brisbane|AU|australia|false|
+AUFRE|Fremantle|AU|australia|false|
+AUADL|Adelaide|AU|australia|false|

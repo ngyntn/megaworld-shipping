@@ -1,0 +1,52 @@
+/* Whiteboard popup — features/whiteboard. Sized like the price-history popup, with a little more height. */
+.whiteboard-backdrop { position:fixed; inset:0; width:100%; height:100%; max-width:none; max-height:none; min-height:0; margin:0; border:0; padding:24px; background:transparent; color:#0f1e36; overflow:clip; display:flex; align-items:center; justify-content:center; }
+.whiteboard-backdrop:not([open]) { display:none; }
+.whiteboard-backdrop::backdrop { background:rgba(15,30,54,.28); backdrop-filter:blur(3px); }
+.whiteboard-backdrop[open] { animation:wb-fade-in .2s ease-out both; }
+.whiteboard-backdrop[open].is-closing { animation:wb-fade-out .22s ease-in both; }
+.whiteboard { position:relative; width:1080px; max-width:100%; height:min(660px,calc(100dvh - 48px)); display:flex; flex-direction:column; overflow:hidden; background:#fff; border-radius:14px; box-shadow:0 20px 64px #0a2b5c33; animation:wb-pop-in .22s cubic-bezier(.2,.8,.2,1) both; }
+.whiteboard-backdrop.is-closing .whiteboard { animation:wb-pop-out .22s ease-in both; }
+@keyframes wb-fade-in { from { opacity:0; } to { opacity:1; } }
+@keyframes wb-fade-out { to { opacity:0; } }
+@keyframes wb-pop-in { from { opacity:0; transform:translateY(8px) scale(.99); } to { opacity:1; transform:translateY(0) scale(1); } }
+@keyframes wb-pop-out { to { opacity:0; transform:translateY(8px) scale(.99); } }
+
+.whiteboard-header { display:flex; align-items:center; justify-content:space-between; gap:16px; padding:16px 24px; border-bottom:1px solid #e8eef6; flex-shrink:0; }
+.whiteboard-header h1 { margin:0; font-size:20px; font-weight:700; color:#0b3a75; }
+.whiteboard-header p { margin:4px 0 0; font-size:13px; color:#5b6b82; }
+.whiteboard-actions { display:flex; gap:6px; flex-shrink:0; }
+.wb-icon-btn { display:flex; align-items:center; justify-content:center; width:38px; height:38px; border:0; border-radius:9px; background:transparent; color:#44546e; cursor:pointer; transition:background-color .15s, color .15s; }
+.wb-icon-btn:hover { background:#eef4fb; color:#0b3a75; }
+.wb-icon-btn:focus-visible { outline:2px solid #1d4e91; outline-offset:1px; }
+
+.wb-scroll { position:relative; flex:1; min-height:0; overflow:auto; background:#fff; }
+.wb-editor { min-height:100%; padding:28px 40px 96px; outline:none; font-size:18px; line-height:1.7; color:#0f1e36; caret-color:transparent; white-space:pre-wrap; overflow-wrap:anywhere; }
+.wb-placeholder { position:absolute; top:28px; left:40px; font-size:18px; line-height:1.7; color:#9aa9bd; pointer-events:none; }
+.wb-line { position:relative; min-height:1.7em; }
+/* Heading: "1. " — bold, two sizes larger than body text (18px → 20px). */
+.wb-line.wb-h { font-size:20px; font-weight:700; color:#0b3a75; margin-top:10px; }
+.wb-line.wb-h:first-child { margin-top:0; }
+/* Bullet: "- " — a small dot instead of the dash. */
+.wb-line[data-bullet] { padding-left:26px; }
+.wb-line[data-bullet]::before { content:""; position:absolute; left:9px; top:calc(.85em - 2.5px); width:5px; height:5px; border-radius:50%; background:#5b6b82; }
+
+/* Custom caret: fades smoothly and glides between positions. */
+.wb-caret { position:absolute; top:0; left:0; width:2px; border-radius:1px; background:#1d4e91; pointer-events:none; will-change:transform; transition:transform .09s cubic-bezier(.2,.8,.2,1), height .09s ease-out; animation:wb-blink 1.15s ease-in-out infinite; }
+.wb-caret[hidden] { display:none; }
+.wb-caret.snap { transition:none; }
+@keyframes wb-blink { 0%,100% { opacity:1; } 50% { opacity:0; } }
+@media (prefers-reduced-motion:reduce) {
+  .whiteboard-backdrop[open], .whiteboard { animation:none; }
+  .wb-caret { transition:none; }
+}
+
+/* Pasted pictures: fixed frame, rounded corners, whole picture visible. */
+.wb-line.wb-img { padding:6px 0; margin:4px 0; user-select:none; }
+.wb-img img { display:block; width:360px; max-width:100%; height:240px; object-fit:contain; border-radius:12px; background:#f4f7fb; border:1px solid #e3ebf5; cursor:zoom-in; transition:box-shadow .15s; }
+.wb-img:hover img { box-shadow:0 2px 10px #0a2b5c1f; }
+.wb-img.selected img { outline:2px solid #1d4e91; outline-offset:2px; }
+
+/* Picture viewer: covers the whiteboard only; click or Esc to close. */
+.wb-lightbox { position:absolute; inset:0; z-index:5; display:flex; align-items:center; justify-content:center; padding:32px; background:rgba(15,30,54,.74); cursor:zoom-out; outline:none; animation:wb-fade-in .15s ease-out both; }
+.wb-lightbox img { max-width:100%; max-height:100%; object-fit:contain; border-radius:12px; box-shadow:0 16px 48px #00000055; animation:wb-pop-in .2s cubic-bezier(.2,.8,.2,1) both; }
+@media (prefers-reduced-motion:reduce) { .wb-lightbox, .wb-lightbox img { animation:none; } }

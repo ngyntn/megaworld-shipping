@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<title>Admin — Import Excel</title>
+<script src="./vendor/react.js"></script>
+<script src="./vendor/react-dom.js"></script>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+*{box-sizing:border-box}
+a{color:#1E5FC2;text-decoration:none}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 20px;border-radius:8px;border:0;background:#0B3A75;color:#fff;font:inherit;font-size:14px;font-weight:600;cursor:pointer;text-decoration:none}
+.btn2{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 16px;border-radius:8px;border:1px solid #CFDBEA;background:#fff;color:#0B3A75;font:inherit;font-size:14px;font-weight:600;cursor:pointer;text-decoration:none}
+.it{display:grid;grid-template-columns:52px 64px minmax(0,1fr) 62px 78px 70px 80px minmax(0,1.3fr);align-items:center}
+.it>div{padding:10px 8px;min-width:0}
+</style>
+</helmet>
+<div style="width: 860px; height: 780px; font-family: Inter, system-ui, sans-serif; color: #0F1E36; background: #3B4A63; display: flex; align-items: center; justify-content: center">
+  <div role="dialog" aria-modal="true" aria-labelledby="iTitle" style="width: 820px; background: #fff; border-radius: 14px; overflow: hidden">
+    <div style="display: flex; justify-content: space-between; align-items: center; padding: 18px 24px; border-bottom: 1px solid #E8EEF6">
+      <h2 id="iTitle" style="margin: 0; font-size: 20px; font-weight: 700; color: #0A2B5C">Import giá cước từ Excel</h2>
+      <a href="AdminRates.dc.html" aria-label="Đóng" style="display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; color: #44546E">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg>
+      </a>
+    </div>
+    <div style="padding: 18px 24px; display: flex; flex-direction: column; gap: 16px">
+      <ol style="margin: 0; padding: 0; list-style: none; display: flex; gap: 10px; font-size: 13px; font-weight: 600">
+        <li style="flex: 1; display: flex; align-items: center; gap: 8px; color: #17663A"><span style="display: inline-flex; width: 24px; height: 24px; border-radius: 12px; background: #17663A; color: #fff; align-items: center; justify-content: center; font-size: 12px">✓</span>Tải file lên</li>
+        <li aria-current="step" style="flex: 1; display: flex; align-items: center; gap: 8px; color: #0B3A75"><span style="display: inline-flex; width: 24px; height: 24px; border-radius: 12px; background: #0B3A75; color: #fff; align-items: center; justify-content: center; font-size: 12px">2</span>Kiểm tra dữ liệu</li>
+        <li style="flex: 1; display: flex; align-items: center; gap: 8px; color: #5B6B82"><span style="display: inline-flex; width: 24px; height: 24px; border-radius: 12px; border: 1.5px solid #9AAAC0; align-items: center; justify-content: center; font-size: 12px">3</span>Xác nhận nhập</li>
+      </ol>
+
+      <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px; padding: 12px 14px; border: 1px solid #DCE6F2; border-radius: 10px">
+        <span style="display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 8px; background: #E3F4EA; color: #17663A; font-size: 11px; font-weight: 800">XLSX</span>
+        <div style="flex: 1"><div style="font-weight: 600; font-size: 14px">gia-cuoc-T12-2026.xlsx</div><div style="font-size: 12px; color: #5B6B82">47 dòng · tải lên lúc 21:04</div></div>
+        <a href="AdminImport.dc.html" style="font-size: 13px; font-weight: 600">Đổi file</a>
+        <a href="AdminImport.dc.html" style="font-size: 13px; font-weight: 600">Tải file mẫu</a>
+      </div>
+
+      <div style="display: flex; flex-wrap: wrap; gap: 8px">
+        <span style="font-size: 12.5px; font-weight: 700; padding: 5px 12px; border-radius: 14px; background: #E3F4EA; color: #17663A">40 dòng mới</span>
+        <span style="font-size: 12.5px; font-weight: 700; padding: 5px 12px; border-radius: 14px; background: #EAF1FB; color: #1E4F91">5 dòng thay giá hiện hành (giá cũ → lịch sử)</span>
+        <span style="font-size: 12.5px; font-weight: 700; padding: 5px 12px; border-radius: 14px; background: #FDECEC; color: #B3261E">2 dòng lỗi</span>
+      </div>
+
+      <div style="border: 1px solid #DCE6F2; border-radius: 10px; overflow: hidden">
+        <div class="it" style="background: #F2F6FB; font-size: 11.5px; font-weight: 600; color: #33445E; border-bottom: 1px solid #DCE6F2">
+          <div>Dòng</div><div>Hãng</div><div>Tuyến</div><div>Cont</div><div>Giá gốc</div><div>Lãi</div><div>Giá bán</div><div>Kết quả kiểm tra</div>
+        </div>
+        <sc-for list="{{rows}}" as="r" hint-placeholder-count="7">
+          <div class="it" style="{{r.rowStyle}}">
+            <div style="color: #5B6B82">#{{r.n}}</div><div style="font-weight: 700">{{r.line}}</div><div>{{r.route}}</div><div>{{r.c}}</div><div>{{r.cost}}</div><div>{{r.p}}</div><div style="font-weight: 700">{{r.sell}}</div>
+            <div><span style="{{r.resStyle}}">{{r.res}}</span></div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px; padding: 16px 24px; border-top: 1px solid #E8EEF6; background: #FAFCFE">
+      <span style="font-size: 12.5px; color: #5B6B82">Dòng lỗi sẽ được bỏ qua. Bạn có thể sửa file và import lại.</span>
+      <div style="display: flex; gap: 10px">
+        <a href="AdminRates.dc.html" class="btn2">Hủy</a>
+        <a href="AdminRates.dc.html" class="btn">Nhập 45 dòng hợp lệ</a>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":860,"height":780}}'>
+class Component extends DCLogic {
+  renderVals() {
+    var R = {new:['Mới','background:#E3F4EA;color:#17663A'],rep:['Thay giá hiện hành','background:#EAF1FB;color:#1E4F91'],err:['','background:#FDECEC;color:#B3261E']};
+    var raw = [
+      [2,'ONE','Cát Lái → Los Angeles','40HC',1880,150,'rep'],
+      [3,'ONE','Cát Lái → Los Angeles','20GP',1480,150,'rep'],
+      [4,'MSC','Cái Mép → Rotterdam','40HC',1260,120,'new'],
+      [5,'KMTC','Hải Phòng → Busan','20GP',150,40,'new'],
+      [6,'EMC','Cát Lái → Kaohsiung','40HC',170,40,'new'],
+      [7,'YML','Cát Lái → Long Bech','40HC',1850,140,'err','POD “Long Bech” không có trong danh mục'],
+      [8,'SNL','Cát Lái → Shanghai','20GP',null,60,'err','Thiếu giá gốc']
+    ];
+    var rows = raw.map(function (r) {
+      var k = r[6];
+      return { n: r[0], line: r[1], route: r[2], c: r[3], cost: r[4] == null ? '—' : '$' + r[4].toLocaleString('en-US'), p: r[5], sell: r[4] == null ? '—' : '$' + (r[4] + r[5]).toLocaleString('en-US'),
+        res: k === 'err' ? r[7] : R[k][0], resStyle: 'font-size:11.5px;font-weight:700;padding:3px 8px;border-radius:8px;display:inline-block;' + R[k][1],
+        rowStyle: 'font-size:12.5px;border-bottom:1px solid #E8EEF6;' + (k === 'err' ? 'background:#FFF6F6' : 'background:#fff') };
+    });
+    return { rows: rows };
+  }
+}
+</script>
+</body>
+</html>

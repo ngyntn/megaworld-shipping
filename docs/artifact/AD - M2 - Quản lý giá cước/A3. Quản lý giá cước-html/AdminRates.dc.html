@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<title>Admin — Quản lý giá cước</title>
+<script src="./vendor/react.js"></script>
+<script src="./vendor/react-dom.js"></script>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#EEF4FB}
+*{box-sizing:border-box}
+a{color:#1E5FC2;text-decoration:none}a:hover{color:#0B3A75;text-decoration:underline}
+.nav{display:flex;align-items:center;gap:12px;min-height:44px;padding:0 14px;border-radius:8px;color:#C6D5EB;font-size:14px;font-weight:500;text-decoration:none}
+.nav:hover{background:rgba(255,255,255,.08);color:#fff;text-decoration:none}
+.nav.on{background:#1D4E91;color:#fff}
+.card{background:#fff;border:1px solid #DCE6F2;border-radius:12px}
+.fld{display:flex;flex-direction:column;gap:2px;padding:6px 12px;border:1px solid #CFDBEA;border-radius:8px;background:#fff;min-width:0}
+.fld span{font-size:11.5px;font-weight:600;color:#44546E}
+.fld select{border:0;padding:2px 0;font:inherit;font-size:14px;color:#0F1E36;background:transparent;outline:none;width:100%}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 18px;border-radius:8px;border:0;background:#0B3A75;color:#fff;font:inherit;font-size:14px;font-weight:600;cursor:pointer;text-decoration:none;white-space:nowrap}
+.btn:hover{background:#082C5A;color:#fff;text-decoration:none}
+.btn2{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 16px;border-radius:8px;border:1px solid #CFDBEA;background:#fff;color:#0B3A75;font:inherit;font-size:14px;font-weight:600;cursor:pointer;text-decoration:none;white-space:nowrap}
+.tab{min-height:44px;padding:0 2px;border:0;border-bottom:2px solid transparent;background:none;font:inherit;font-size:14px;font-weight:500;color:#44546E;cursor:pointer;white-space:nowrap}
+.tab.on{color:#0B3A75;border-bottom-color:#0B3A75;font-weight:700}
+.ar{display:grid;grid-template-columns:44px 150px 190px repeat(4,118px) 130px 64px 160px 116px 210px 110px 186px;min-width:1924px;align-items:center}
+.ar>div{padding:11px 10px;min-width:0}
+.ar>div:nth-child(2){position:sticky;left:0;z-index:1;background:inherit;box-shadow:1px 0 0 #E2E9F3}
+.ic{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:7px;border:1px solid #CFDBEA;background:#fff;color:#0B3A75;cursor:pointer;text-decoration:none}
+.ic:hover{background:#F2F6FB}
+</style>
+</helmet>
+<div style="font-family: Inter, system-ui, sans-serif; color: #0F1E36; background: #EEF4FB; min-height: 100vh; display: flex; flex-wrap: wrap">
+<aside style="flex: 1 1 240px; max-width: 100%; background: #0A2B5C; padding: 22px 14px; display: flex; flex-direction: column; gap: 24px">
+  <div style="display: flex; flex-direction: column; align-items: center; gap: 6px; color: #fff; padding: 6px 0 4px">
+    <svg width="46" height="34" viewBox="0 0 46 34" fill="none" stroke="#fff" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M4 22h38l-5 8H9z"></path><path d="M10 22v-7h26v7"></path><path d="M15 15V9h8v6M25 15v-4h7v4"></path><path d="M2 32c3 0 3-1.5 6-1.5s3 1.5 6 1.5 3-1.5 6-1.5 3 1.5 6 1.5 3-1.5 6-1.5 3 1.5 6 1.5"></path></svg>
+    <span style="font-size: 19px; font-weight: 700">SeaLogistics</span>
+    <span style="font-size: 11px; font-weight: 700; letter-spacing: .08em; color: #9FB6D8">QUẢN TRỊ</span>
+  </div>
+  <nav aria-label="Điều hướng quản trị" style="display: flex; flex-direction: column; gap: 4px">
+    <sc-for list="{{nav}}" as="n" hint-placeholder-count="5">
+      <a href="{{n.href}}" class="{{n.cls}}">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{n.d}}"></path></svg>
+        <span style="flex: 1">{{n.label}}</span>
+      </a>
+    </sc-for>
+  </nav>
+  <div style="margin-top: auto; display: flex; flex-direction: column; gap: 4px; border-top: 1px solid #1D4E91; padding-top: 14px">
+    <a href="Main.dc.html" class="nav"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v6H4V6h6"></path></svg>Xem trang khách</a>
+    <a href="AdminLogin.dc.html" class="nav"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 4H4v16h6M15 8l4 4-4 4M19 12H9"></path></svg>Đăng xuất</a>
+  </div>
+</aside>
+<main style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column">
+  <header style="display: flex; flex-wrap: wrap; align-items: center; gap: 14px; padding: 14px 28px; background: #fff; border-bottom: 1px solid #DCE6F2">
+    <label style="flex: 1 1 280px; display: flex; align-items: center; gap: 10px; min-height: 44px; padding: 0 14px; border: 1px solid #DCE6F2; border-radius: 22px; background: #F5F8FC">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5B6B82" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14zM21 21l-5-5"></path></svg>
+      <input type="search" aria-label="Tìm kiếm" placeholder="Tìm theo POL, POD, hãng tàu…" style="flex: 1; border: 0; background: transparent; font: inherit; font-size: 14px; outline: none">
+    </label>
+    <div style="display: flex; align-items: center; gap: 10px">
+      <span style="display: inline-flex; align-items: center; justify-content: center; width: 38px; height: 38px; border-radius: 19px; background: #1D4E91; color: #fff; font-size: 13px; font-weight: 700">NV</span>
+      <span style="display: flex; flex-direction: column"><b style="font-size: 14px">[Tên nhân viên]</b><span style="font-size: 12px; color: #5B6B82">Admin</span></span>
+    </div>
+  </header>
+
+  <div style="padding: 28px; display: flex; flex-direction: column; gap: 18px">
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 12px">
+      <div>
+        <h1 style="margin: 0; font-size: 28px; font-weight: 700; color: #0A2B5C">Quản lý giá cước</h1>
+        <p style="margin: 6px 0 0; font-size: 14px; color: #5B6B82">Nhập giá gốc + lợi nhuận → hệ thống tính giá bán. Khách chỉ thấy giá bán.</p>
+      </div>
+      <div style="display: flex; flex-wrap: wrap; gap: 10px">
+        <a href="AdminImport.dc.html" class="btn2">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20V9M7 14l5-5 5 5M4 4h16"></path></svg>Import Excel</a>
+        <a href="AdminRateForm.dc.html" class="btn">+ Thêm dòng giá</a>
+      </div>
+    </div>
+
+    <div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center; padding: 12px 16px; border-radius: 10px; background: #FFF8EA; border: 1px solid #F1D9A6; font-size: 13.5px; color: #5C3D00">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 11h12v10H6zM8 11V7a4 4 0 0 1 8 0v4"></path></svg>
+      <span style="flex: 1 1 400px">Giá gốc và lợi nhuận lưu ở <b>bảng riêng chỉ Admin truy cập</b>, không nằm chung bảng giá bán mà khách đọc được.</span>
+      <label style="display: flex; align-items: center; gap: 8px; font-weight: 600; min-height: 40px; cursor: pointer">
+        <input type="checkbox" checked="{{showCost}}" onChange="{{toggleCost}}" style="width: 18px; height: 18px"> Hiện giá gốc &amp; lợi nhuận
+      </label>
+    </div>
+
+    <section class="card" aria-label="Danh sách giá" style="overflow: hidden">
+      <div style="padding: 4px 20px 0; border-bottom: 1px solid #E8EEF6">
+        <div role="tablist" style="display: flex; gap: 26px; overflow-x: auto">
+          <button role="tab" aria-selected="true" class="tab on">Hiện hành · 318</button>
+          <button role="tab" aria-selected="false" class="tab">Sắp hết hạn · 12</button>
+          <button role="tab" aria-selected="false" class="tab">Hết hạn · 41</button>
+          <button role="tab" aria-selected="false" class="tab">Lịch sử · 1.204</button>
+          <button role="tab" aria-selected="false" class="tab">Tất cả</button>
+        </div>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; padding: 14px 20px">
+        <label class="fld"><span>POL</span><select><option>Tất cả POL</option><option>Cát Lái</option><option>Cái Mép</option><option>Hải Phòng</option></select></label>
+        <label class="fld"><span>POD</span><select><option>Tất cả POD</option><option>Los Angeles</option><option>Rotterdam</option></select></label>
+        <label class="fld"><span>Hãng tàu</span><select><option>Tất cả hãng</option><option>ONE</option><option>MSC</option></select></label>
+        <label class="fld"><span>Validity</span><select><option>Mọi thời gian</option><option>Tháng 11/2026</option></select></label>
+      </div>
+      <div style="overflow-x: auto; border-top: 1px solid #DCE6F2">
+        <div class="ar" style="background: #F2F6FB; font-size: 12px; font-weight: 600; color: #33445E; border-bottom: 1px solid #DCE6F2">
+          <div><input type="checkbox" aria-label="Chọn tất cả" style="width: 16px; height: 16px"></div>
+          <div>Hãng tàu</div><div>Tuyến</div><div>20GP</div><div>40GP</div><div>40HC</div><div>45HC</div><div>Phụ phí</div><div>ĐK</div><div>Validity</div><div>Trạng thái</div><div>Ghi chú nội bộ</div><div>Cập nhật</div><div>Thao tác</div>
+        </div>
+        <sc-for list="{{rows}}" as="r" hint-placeholder-count="8">
+          <div class="ar" style="{{r.rowStyle}}">
+            <div><input type="checkbox" aria-label="Chọn dòng" style="width: 16px; height: 16px"></div>
+            <div style="display: flex; align-items: center; gap: 8px"><span style="{{r.logo}}">{{r.code}}</span><span style="font-weight: 600">{{r.name}}</span></div>
+            <div><div style="font-weight: 600">{{r.route}}</div><div style="font-size: 12px; color: #5B6B82">{{r.codes}}</div></div>
+            <sc-for list="{{r.prices}}" as="p" hint-placeholder-count="4">
+              <div>
+                <div style="font-weight: 700; color: #0B3A75">{{p.sell}}</div>
+                <sc-if value="{{showCost}}" hint-placeholder-val="{{true}}"><div style="font-size: 11.5px; color: #8A4B00">{{p.cost}}</div></sc-if>
+              </div>
+            </sc-for>
+            <div style="font-size: 12.5px; color: #33445E">{{r.sur}}</div>
+            <div style="font-size: 12.5px; font-weight: 700">{{r.term}}</div>
+            <div style="font-size: 12.5px">{{r.validity}}</div>
+            <div><span style="{{r.stStyle}}">{{r.st}}</span></div>
+            <div style="font-size: 12.5px; color: #5C3D00; white-space: normal"><sc-if value="{{r.hasNote}}" hint-placeholder-val="{{true}}"><span style="background: #FFF8EA; border-radius: 6px; padding: 3px 6px; display: inline-block">{{r.inote}}</span></sc-if></div>
+            <div style="font-size: 12px; color: #5B6B82">{{r.at}}</div>
+            <div style="display: flex; gap: 6px">
+              <a href="AdminRateForm.dc.html" class="ic" aria-label="Sửa"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16zM13 7l4 4"></path></svg></a>
+              <a href="AdminRateForm.dc.html" class="ic" aria-label="Nhân bản rồi chỉnh"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M9 9h11v11H9zM5 15H4V4h11v1"></path></svg></a>
+              <a href="RateHistory.dc.html" class="ic" aria-label="Lịch sử giá"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 7v5l3 2M3 12a9 9 0 1 0 3-6.7M3 4v4h4"></path></svg></a>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px; padding: 12px 20px; font-size: 13px; color: #44546E; background: #FAFCFE">
+        <span>Hiển thị 1–8 / 318 dòng giá · giá hết hạn tự đổi trạng thái theo ngày</span>
+        <div style="display: flex; gap: 6px">
+          <button class="ic" aria-label="Trang trước">‹</button><button class="ic" style="background: #0B3A75; color: #fff; border-color: #0B3A75" aria-current="page">1</button><button class="ic">2</button><button class="ic">3</button><button class="ic" aria-label="Trang sau">›</button>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1300}}'>
+class Component extends DCLogic {
+  constructor(p) { super(p); this.state = { cost: true }; }
+  renderVals() {
+    var self = this;
+    var C = {ONE:'#0B3A75',MSC:'#1F5FA8',EMC:'#0E7C66',CMA:'#8C2F39',WHL:'#8A4B08',KMTC:'#0F6E8C',COSCO:'#B4232C',MSK:'#2F6DA8'};
+    var logo = function (c) { return 'display:inline-flex;align-items:center;justify-content:center;flex:none;width:48px;height:28px;border-radius:6px;font-size:10px;font-weight:800;color:#fff;background:' + C[c]; };
+    var st = {cur:['Hiện hành','background:#E3F4EA;color:#17663A'],soon:['Sắp hết hạn','background:#FFF1DC;color:#8A4B00'],exp:['Hết hạn','background:#B3261E;color:#fff']};
+    var f = function (v) { return '$' + v.toLocaleString('en-US'); };
+    var raw = [
+      ['ONE','Cát Lái → Los Angeles','VNCLI → USLAX',[[1500,150],[1900,150],[1900,150],[2300,150]],'LSS 80','FOB','01/11 – 30/11/2026','cur','Sếp duyệt lãi 150/cont','03/11 09:12'],
+      ['MSC','Cái Mép → Rotterdam','VNCMT → NLRTM',[[780,120],[1300,120],[1300,120],null],'LSS 75 · ENS 35','CIF','01/11 – 30/11/2026','cur','','03/11 08:40'],
+      ['WHL','Cát Lái → Los Angeles','VNCLI → USLAX',[[1420,130],[1820,130],[1820,130],null],'LSS 70 · EBS 25','FOB','25/10 – 07/11/2026','soon','Hỏi lại giá tuần sau','28/10 14:30'],
+      ['KMTC','Hải Phòng → Busan','VNHPH → KRPUS',[[140,40],[220,60],[220,60],null],'EBS 20','FOB','01/11 – 15/11/2026','cur','Khách quen: giảm lãi còn 30','02/11 16:05'],
+      ['CMA','Cát Lái → Long Beach','VNCLI → USLGB',[[1530,150],[1930,150],[1930,150],[2330,150]],'LSS 85 · PSS 60','FOB','01/11 – 30/11/2026','cur','','02/11 15:20'],
+      ['COSCO','Cát Lái → Los Angeles','VNCLI → USLAX',[[1460,130],[1860,130],[1860,130],[2260,130]],'LSS 80 · PSS 50','FOB','27/10 – 10/11/2026','soon','','27/10 10:15'],
+      ['EMC','Cát Lái → Kaohsiung','VNCLI → TWKHH',[[90,30],[160,40],[160,40],null],'—','FOB','01/11 – 20/11/2026','cur','Lãi theo tuyến (mặc định)','02/11 10:02'],
+      ['MSK','Cát Lái → Los Angeles','VNCLI → USLAX',[[1550,150],[2000,150],[2000,150],[2400,150]],'LSS 90','FOB','01/10 – 31/10/2026','exp','','01/10 09:00']
+    ];
+    var showCost = this.state.cost;
+    var rows = raw.map(function (r) {
+      return { code: r[0], name: r[0] === 'CMA' ? 'CMA CGM' : r[0], logo: logo(r[0]), route: r[1], codes: r[2],
+        prices: r[3].map(function (p) { return p ? { sell: f(p[0] + p[1]), cost: 'Gốc ' + f(p[0]) + ' + ' + p[1] } : { sell: '—', cost: '' }; }),
+        sur: r[4], term: r[5], validity: r[6], st: st[r[7]][0], stStyle: 'font-size:12px;font-weight:700;padding:3px 9px;border-radius:10px;' + st[r[7]][1],
+        inote: r[8], hasNote: !!r[8], at: r[9],
+        rowStyle: 'font-size:13.5px;border-bottom:1px solid #E8EEF6;' + (r[7] === 'exp' ? 'background:#FFF6F6;color:#56657C' : 'background:#fff') };
+    });
+    var navRaw = [['Dashboard','AdminDashboard.dc.html','M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z'],['Giá cước','AdminRates.dc.html','M3 12V4h8l9 9-8 8zM7.5 7.5h.01'],['Lịch tàu','AdminSchedule.dc.html','M4 6h16v14H4zM4 10h16M8 3v4M16 3v4'],['Hãng tàu & cảng','AdminMaster.dc.html','M12 3a2 2 0 1 0 0 4 2 2 0 0 0 0-4zM12 7v14M5 13a7 7 0 0 0 14 0M8 10h8'],['Tài khoản & cài đặt','AdminSettings.dc.html','M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M14 4v4M8 10v4M16 16v4']];
+    var nav = navRaw.map(function (n) { return { label: n[0], href: n[1], d: n[2], cls: n[1] === 'AdminRates.dc.html' ? 'nav on' : 'nav' }; });
+    return { rows: rows, showCost: showCost, toggleCost: function () { self.setState({ cost: !self.state.cost }); }, nav: nav };
+  }
+}
+</script>
+</body>
+</html>

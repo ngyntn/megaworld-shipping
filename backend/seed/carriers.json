@@ -1,0 +1,17 @@
+[
+  {"code":"ONE","name":"Ocean Network Express","website":"https://www.one-line.com/"},
+  {"code":"MSC","name":"Mediterranean Shipping Company","website":"https://www.msc.com/"},
+  {"code":"EMC","name":"Evergreen Marine Corporation","website":"https://www.evergreen-marine.com/"},
+  {"code":"CMA CGM","name":"CMA CGM","website":"https://www.cma-cgm.com/"},
+  {"code":"TSL","name":"T.S. Lines","website":"https://www.tslines.com/"},
+  {"code":"IAL","name":"Interasia Lines","website":"https://www.interasia.com/"},
+  {"code":"WHL","name":"Wan Hai Lines","website":"https://www.wanhai.com/"},
+  {"code":"YML","name":"Yang Ming Marine Transport Corporation","website":"https://www.yangming.com/"},
+  {"code":"SML","name":"SM Line Corporation","website":"https://www.smlines.com/"},
+  {"code":"NSS","name":"Namsung Shipping","website":"https://www.namsung.co.kr/"},
+  {"code":"KMTC","name":"Korea Marine Transport Company","website":"https://www.kmtc.co.kr/"},
+  {"code":"SNK","name":"Sinokor Merchant Marine","website":"https://www.sinokor.co.kr/"},
+  {"code":"COSCO","name":"COSCO SHIPPING Lines","website":"https://lines.coscoshipping.com/"},
+  {"code":"MSK","name":"Maersk","website":"https://www.maersk.com/"},
+  {"code":"SNL","name":"Sinotrans Container Lines","website":"https://www.sinotrans.co.jp/"}
+]

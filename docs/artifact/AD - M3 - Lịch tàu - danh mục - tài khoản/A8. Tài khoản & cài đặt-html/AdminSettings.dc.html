@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<title>Admin — Tài khoản &amp; cài đặt</title>
+<script src="./vendor/react.js"></script>
+<script src="./vendor/react-dom.js"></script>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#EEF4FB}
+*{box-sizing:border-box}
+a{color:#1E5FC2;text-decoration:none}a:hover{color:#0B3A75;text-decoration:underline}
+.nav{display:flex;align-items:center;gap:12px;min-height:44px;padding:0 14px;border-radius:8px;color:#C6D5EB;font-size:14px;font-weight:500;text-decoration:none}
+.nav:hover{background:rgba(255,255,255,.08);color:#fff;text-decoration:none}
+.nav.on{background:#1D4E91;color:#fff}
+.card{background:#fff;border:1px solid #DCE6F2;border-radius:12px}
+.fld{display:flex;flex-direction:column;gap:2px;padding:7px 12px;border:1px solid #CFDBEA;border-radius:8px;background:#fff;min-width:0}
+.fld:focus-within{border-color:#0B3A75;box-shadow:0 0 0 2px rgba(11,58,117,.15)}
+.fld span{font-size:11.5px;font-weight:600;color:#44546E}
+.fld select,.fld input{border:0;padding:2px 0;font:inherit;font-size:14px;color:#0F1E36;background:transparent;outline:none;width:100%}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 18px;border-radius:8px;border:0;background:#0B3A75;color:#fff;font:inherit;font-size:14px;font-weight:600;cursor:pointer;text-decoration:none;white-space:nowrap}
+.btn:hover{background:#082C5A;color:#fff;text-decoration:none}
+.btn:disabled{background:#9AAAC0;cursor:not-allowed}
+.btn2{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 16px;border-radius:8px;border:1px solid #CFDBEA;background:#fff;color:#0B3A75;font:inherit;font-size:14px;font-weight:600;cursor:pointer;text-decoration:none;white-space:nowrap}
+.btn2:hover{background:#F2F6FB;text-decoration:none}
+.btn2:disabled{color:#8A97AB;background:#F2F5F9;cursor:not-allowed}
+</style>
+</helmet>
+<div style="font-family: Inter, system-ui, sans-serif; color: #0F1E36; background: #EEF4FB; min-height: 100vh; display: flex; flex-wrap: wrap">
+<aside style="flex: 1 1 240px; max-width: 100%; background: #0A2B5C; padding: 22px 14px; display: flex; flex-direction: column; gap: 24px">
+  <div style="display: flex; flex-direction: column; align-items: center; gap: 6px; color: #fff; padding: 6px 0 4px">
+    <svg width="46" height="34" viewBox="0 0 46 34" fill="none" stroke="#fff" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M4 22h38l-5 8H9z"></path><path d="M10 22v-7h26v7"></path><path d="M15 15V9h8v6M25 15v-4h7v4"></path><path d="M2 32c3 0 3-1.5 6-1.5s3 1.5 6 1.5 3-1.5 6-1.5 3 1.5 6 1.5 3-1.5 6-1.5 3 1.5 6 1.5"></path></svg>
+    <span style="font-size: 19px; font-weight: 700">SeaLogistics</span>
+    <span style="font-size: 11px; font-weight: 700; letter-spacing: .08em; color: #9FB6D8">QUẢN TRỊ</span>
+  </div>
+  <nav aria-label="Điều hướng quản trị" style="display: flex; flex-direction: column; gap: 4px">
+    <sc-for list="{{nav}}" as="n" hint-placeholder-count="5">
+      <a href="{{n.href}}" class="{{n.cls}}">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{n.d}}"></path></svg>
+        <span style="flex: 1">{{n.label}}</span>
+      </a>
+    </sc-for>
+  </nav>
+  <div style="margin-top: auto; display: flex; flex-direction: column; gap: 4px; border-top: 1px solid #1D4E91; padding-top: 14px">
+    <a href="Main.dc.html" class="nav"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v6H4V6h6"></path></svg>Xem trang khách</a>
+    <a href="AdminLogin.dc.html" class="nav"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 4H4v16h6M15 8l4 4-4 4M19 12H9"></path></svg>Đăng xuất</a>
+  </div>
+</aside>
+<main style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column">
+  <header style="display: flex; flex-wrap: wrap; align-items: center; gap: 14px; padding: 14px 28px; background: #fff; border-bottom: 1px solid #DCE6F2">
+    <div style="flex: 1"></div>
+    <div style="display: flex; align-items: center; gap: 10px">
+      <span style="display: inline-flex; align-items: center; justify-content: center; width: 38px; height: 38px; border-radius: 19px; background: #1D4E91; color: #fff; font-size: 13px; font-weight: 700">NV</span>
+      <span style="display: flex; flex-direction: column"><b style="font-size: 14px">{{savedName}}</b><span style="font-size: 12px; color: #5B6B82">Admin</span></span>
+    </div>
+  </header>
+
+  <div style="padding: 28px; display: flex; flex-direction: column; gap: 20px">
+    <div>
+      <h1 style="margin: 0; font-size: 28px; font-weight: 700; color: #0A2B5C">Tài khoản &amp; cài đặt</h1>
+      <p style="margin: 6px 0 0; font-size: 14px; color: #5B6B82">Thông tin tài khoản của bạn và thông tin liên hệ hiển thị cho khách</p>
+    </div>
+
+    <div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+      <div style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 20px">
+
+        <section class="card" aria-label="Thông tin tài khoản" style="overflow: hidden">
+          <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 16px; padding: 20px">
+            <span style="display: inline-flex; align-items: center; justify-content: center; width: 64px; height: 64px; border-radius: 32px; background: #1D4E91; color: #fff; font-size: 22px; font-weight: 700">NV</span>
+            <div style="flex: 1 1 220px; min-width: 0">
+              <div style="font-size: 19px; font-weight: 700; color: #0A2B5C">{{savedName}}</div>
+              <div style="font-size: 13.5px; color: #5B6B82; margin-top: 2px">{{savedEmail}}</div>
+            </div>
+            <div style="display: flex; gap: 8px">
+              <span style="font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 10px; background: #0B3A75; color: #fff">Admin</span>
+              <span style="font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 10px; background: #E3F4EA; color: #17663A">Hoạt động</span>
+            </div>
+          </div>
+          <dl style="margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; padding: 14px 20px; border-top: 1px solid #E8EEF6; background: #FAFCFE">
+            <div><dt style="font-size: 11.5px; font-weight: 600; color: #5B6B82">Vai trò</dt><dd style="margin: 2px 0 0; font-size: 14px; font-weight: 600">Admin</dd></div>
+            <div><dt style="font-size: 11.5px; font-weight: 600; color: #5B6B82">Ngày tạo tài khoản</dt><dd style="margin: 2px 0 0; font-size: 14px; font-weight: 600">[NGÀY TẠO]</dd></div>
+            <div><dt style="font-size: 11.5px; font-weight: 600; color: #5B6B82">Đăng nhập gần nhất</dt><dd style="margin: 2px 0 0; font-size: 14px; font-weight: 600">04/11/2026 08:30</dd></div>
+          </dl>
+          <div style="padding: 20px; border-top: 1px solid #E8EEF6; display: flex; flex-direction: column; gap: 14px">
+            <h2 style="margin: 0; font-size: 17px; font-weight: 700">Cập nhật thông tin</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px">
+              <label class="fld"><span>Họ và tên</span><input type="text" value="{{fName}}" onInput="{{onName}}"></label>
+              <label class="fld"><span>Chức vụ</span><input type="text" value="{{fTitle}}" onInput="{{onTitle}}"></label>
+              <label class="fld"><span>Email đăng nhập</span><input type="text" value="{{fEmail}}" onInput="{{onEmail}}"></label>
+              <label class="fld"><span>Số điện thoại</span><input type="text" value="{{fPhone}}" onInput="{{onPhone}}"></label>
+            </div>
+            <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px">
+              <button type="button" class="btn" disabled="{{cantSave}}" onClick="{{save}}">Lưu thay đổi</button>
+              <button type="button" class="btn2" disabled="{{cantSave}}" onClick="{{reset}}">Hủy thay đổi</button>
+              <sc-if value="{{dirty}}" hint-placeholder-val="{{false}}"><span role="status" style="font-size: 13px; font-weight: 600; color: #8A4B00">Có thay đổi chưa lưu</span></sc-if>
+              <sc-if value="{{justSaved}}" hint-placeholder-val="{{false}}"><span role="status" style="font-size: 13px; font-weight: 600; color: #17663A">✓ Đã lưu thông tin tài khoản</span></sc-if>
+            </div>
+          </div>
+        </section>
+
+        <section class="card" aria-label="Đổi mật khẩu" style="padding: 20px; display: flex; flex-direction: column; gap: 14px">
+          <div>
+            <h2 style="margin: 0; font-size: 17px; font-weight: 700">Đổi mật khẩu</h2>
+            <p style="margin: 4px 0 0; font-size: 13px; color: #5B6B82">Mật khẩu mới tối thiểu 8 ký tự.</p>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px">
+            <label class="fld"><span>Mật khẩu hiện tại</span><input type="password" autocomplete="current-password" value="{{pwCur}}" onInput="{{onCur}}"></label>
+            <label class="fld"><span>Mật khẩu mới</span><input type="password" autocomplete="new-password" value="{{pwNew}}" onInput="{{onNew}}"></label>
+            <label class="fld"><span>Nhập lại mật khẩu mới</span><input type="password" autocomplete="new-password" value="{{pwRep}}" onInput="{{onRep}}"></label>
+          </div>
+          <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px">
+            <button type="button" class="btn2" onClick="{{changePw}}">Cập nhật mật khẩu</button>
+            <sc-if value="{{pwMsg}}" hint-placeholder-val="{{false}}"><span role="status" style="{{pwMsgStyle}}">{{pwMsg}}</span></sc-if>
+          </div>
+        </section>
+      </div>
+
+      <div style="flex: 1 1 340px; min-width: 0; display: flex; flex-direction: column; gap: 20px">
+        <section class="card" aria-label="Liên hệ báo giá" style="padding: 18px 20px; display: flex; flex-direction: column; gap: 10px">
+          <h2 style="margin: 0; font-size: 17px; font-weight: 700">Liên hệ “Yêu cầu báo giá”</h2>
+          <p style="margin: 0; font-size: 13px; color: #5B6B82">Hiển thị cho khách ở nút Yêu cầu báo giá.</p>
+          <label class="fld"><span>Số Zalo</span><input type="text" placeholder="[SỐ ZALO]"></label>
+          <label class="fld"><span>Số điện thoại</span><input type="text" placeholder="[SỐ ĐIỆN THOẠI]"></label>
+          <label class="fld"><span>Email</span><input type="text" placeholder="[EMAIL]"></label>
+          <label class="fld"><span>Giờ làm việc</span><input type="text" placeholder="VD: T2–T7, 8:00–17:30"></label>
+          <button class="btn">Lưu thông tin liên hệ</button>
+        </section>
+        <section class="card" aria-label="Cài đặt giá" style="padding: 18px 20px; display: flex; flex-direction: column; gap: 10px">
+          <h2 style="margin: 0; font-size: 17px; font-weight: 700">Giá &amp; hiển thị</h2>
+          <label class="fld"><span>Lợi nhuận mặc định (USD / container)</span><input type="number" value="150"></label>
+          <label class="fld"><span>Cảnh báo sắp hết hạn trước</span><select><option>7 ngày</option><option>3 ngày</option><option>14 ngày</option></select></label>
+          <label class="fld"><span>Ngôn ngữ mặc định cho khách</span><select><option>Tiếng Việt</option><option>English</option><option>中文</option></select></label>
+          <button class="btn2">Lưu cài đặt</button>
+        </section>
+      </div>
+    </div>
+  </div>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1100}}'>
+class Component extends DCLogic {
+  constructor(p) {
+    super(p);
+    var init = { name: '[Tên nhân viên]', title: 'Nhân viên báo giá', email: '[EMAIL NHÂN VIÊN]', phone: '[SỐ ĐIỆN THOẠI]' };
+    this.state = { form: Object.assign({}, init), saved: Object.assign({}, init), justSaved: false, pw: { cur: '', neu: '', rep: '' }, pwMsg: '', pwOk: false };
+  }
+  renderVals() {
+    var self = this, s = this.state;
+    var keys = ['name', 'title', 'email', 'phone'];
+    var dirty = keys.some(function (k) { return s.form[k] !== s.saved[k]; });
+    var setF = function (k) { return function (e) { var f = Object.assign({}, self.state.form); f[k] = e.target.value; self.setState({ form: f, justSaved: false }); }; };
+    var setP = function (k) { return function (e) { var p = Object.assign({}, self.state.pw); p[k] = e.target.value; self.setState({ pw: p, pwMsg: '' }); }; };
+    var navRaw = [['Dashboard','AdminDashboard.dc.html','M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z'],['Giá cước','AdminRates.dc.html','M3 12V4h8l9 9-8 8zM7.5 7.5h.01'],['Lịch tàu','AdminSchedule.dc.html','M4 6h16v14H4zM4 10h16M8 3v4M16 3v4'],['Hãng tàu & cảng','AdminMaster.dc.html','M12 3a2 2 0 1 0 0 4 2 2 0 0 0 0-4zM12 7v14M5 13a7 7 0 0 0 14 0M8 10h8'],['Tài khoản & cài đặt','AdminSettings.dc.html','M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M14 4v4M8 10v4M16 16v4']];
+    var nav = navRaw.map(function (n) { return { label: n[0], href: n[1], d: n[2], cls: n[1] === 'AdminSettings.dc.html' ? 'nav on' : 'nav' }; });
+    return {
+      nav: nav, dirty: dirty, cantSave: !dirty, justSaved: s.justSaved && !dirty,
+      savedName: s.saved.name, savedEmail: s.saved.email,
+      fName: s.form.name, fTitle: s.form.title, fEmail: s.form.email, fPhone: s.form.phone,
+      onName: setF('name'), onTitle: setF('title'), onEmail: setF('email'), onPhone: setF('phone'),
+      save: function () { self.setState({ saved: Object.assign({}, self.state.form), justSaved: true }); },
+      reset: function () { self.setState({ form: Object.assign({}, self.state.saved), justSaved: false }); },
+      pwCur: s.pw.cur, pwNew: s.pw.neu, pwRep: s.pw.rep, onCur: setP('cur'), onNew: setP('neu'), onRep: setP('rep'),
+      pwMsg: s.pwMsg,
+      pwMsgStyle: 'font-size:13px;font-weight:600;color:' + (s.pwOk ? '#17663A' : '#B3261E'),
+      changePw: function () {
+        var p = self.state.pw, msg = '', ok = false;
+        if (!p.cur) msg = 'Nhập mật khẩu hiện tại';
+        else if (p.neu.length < 8) msg = 'Mật khẩu mới tối thiểu 8 ký tự';
+        else if (p.neu !== p.rep) msg = 'Mật khẩu nhập lại không khớp';
+        else { msg = '✓ Đã cập nhật mật khẩu'; ok = true; }
+        self.setState({ pwMsg: msg, pwOk: ok, pw: ok ? { cur: '', neu: '', rep: '' } : p });
+      }
+    };
+  }
+}
+</script>
+</body>
+</html>

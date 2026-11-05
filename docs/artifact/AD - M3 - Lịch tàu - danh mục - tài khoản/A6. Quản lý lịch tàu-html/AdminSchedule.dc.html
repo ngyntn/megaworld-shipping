@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<title>Admin — Quản lý lịch tàu</title>
+<script src="./vendor/react.js"></script>
+<script src="./vendor/react-dom.js"></script>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#EEF4FB}
+*{box-sizing:border-box}
+a{color:#1E5FC2;text-decoration:none}a:hover{color:#0B3A75;text-decoration:underline}
+.nav{display:flex;align-items:center;gap:12px;min-height:44px;padding:0 14px;border-radius:8px;color:#C6D5EB;font-size:14px;font-weight:500;text-decoration:none}
+.nav:hover{background:rgba(255,255,255,.08);color:#fff;text-decoration:none}
+.nav.on{background:#1D4E91;color:#fff}
+.card{background:#fff;border:1px solid #DCE6F2;border-radius:12px}
+.fld{display:flex;flex-direction:column;gap:2px;padding:7px 12px;border:1px solid #CFDBEA;border-radius:8px;background:#fff;min-width:0}
+.fld span{font-size:11.5px;font-weight:600;color:#44546E}
+.fld select,.fld input{border:0;padding:2px 0;font:inherit;font-size:14px;color:#0F1E36;background:transparent;outline:none;width:100%}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 18px;border-radius:8px;border:0;background:#0B3A75;color:#fff;font:inherit;font-size:14px;font-weight:600;cursor:pointer;text-decoration:none;white-space:nowrap}
+.btn2{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 16px;border-radius:8px;border:1px solid #CFDBEA;background:#fff;color:#0B3A75;font:inherit;font-size:14px;font-weight:600;cursor:pointer;text-decoration:none;white-space:nowrap}
+.btn2:disabled{color:#6B7A90;background:#F2F5F9;cursor:not-allowed}
+.sr{display:grid;grid-template-columns:64px minmax(150px,1fr) 150px 100px 96px 96px 80px 120px 92px;min-width:1000px;align-items:center}
+.sr>div{padding:11px 10px;min-width:0}
+.ic{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:7px;border:1px solid #CFDBEA;background:#fff;color:#0B3A75;cursor:pointer}
+</style>
+</helmet>
+<div style="font-family: Inter, system-ui, sans-serif; color: #0F1E36; background: #EEF4FB; min-height: 100vh; display: flex; flex-wrap: wrap">
+<aside style="flex: 1 1 240px; max-width: 100%; background: #0A2B5C; padding: 22px 14px; display: flex; flex-direction: column; gap: 24px">
+  <div style="display: flex; flex-direction: column; align-items: center; gap: 6px; color: #fff; padding: 6px 0 4px">
+    <svg width="46" height="34" viewBox="0 0 46 34" fill="none" stroke="#fff" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M4 22h38l-5 8H9z"></path><path d="M10 22v-7h26v7"></path><path d="M15 15V9h8v6M25 15v-4h7v4"></path><path d="M2 32c3 0 3-1.5 6-1.5s3 1.5 6 1.5 3-1.5 6-1.5 3 1.5 6 1.5 3-1.5 6-1.5 3 1.5 6 1.5"></path></svg>
+    <span style="font-size: 19px; font-weight: 700">SeaLogistics</span>
+    <span style="font-size: 11px; font-weight: 700; letter-spacing: .08em; color: #9FB6D8">QUẢN TRỊ</span>
+  </div>
+  <nav aria-label="Điều hướng quản trị" style="display: flex; flex-direction: column; gap: 4px">
+    <sc-for list="{{nav}}" as="n" hint-placeholder-count="5">
+      <a href="{{n.href}}" class="{{n.cls}}">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{n.d}}"></path></svg>
+        <span style="flex: 1">{{n.label}}</span>
+      </a>
+    </sc-for>
+  </nav>
+  <div style="margin-top: auto; display: flex; flex-direction: column; gap: 4px; border-top: 1px solid #1D4E91; padding-top: 14px">
+    <a href="Main.dc.html" class="nav"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v6H4V6h6"></path></svg>Xem trang khách</a>
+    <a href="AdminLogin.dc.html" class="nav"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 4H4v16h6M15 8l4 4-4 4M19 12H9"></path></svg>Đăng xuất</a>
+  </div>
+</aside>
+<main style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column">
+  <header style="display: flex; flex-wrap: wrap; align-items: center; gap: 14px; padding: 14px 28px; background: #fff; border-bottom: 1px solid #DCE6F2">
+    <label style="flex: 1 1 280px; display: flex; align-items: center; gap: 10px; min-height: 44px; padding: 0 14px; border: 1px solid #DCE6F2; border-radius: 22px; background: #F5F8FC">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5B6B82" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14zM21 21l-5-5"></path></svg>
+      <input type="search" aria-label="Tìm kiếm" placeholder="Tìm tàu, chuyến, tuyến…" style="flex: 1; border: 0; background: transparent; font: inherit; font-size: 14px; outline: none">
+    </label>
+    <div style="display: flex; align-items: center; gap: 10px">
+      <span style="display: inline-flex; align-items: center; justify-content: center; width: 38px; height: 38px; border-radius: 19px; background: #1D4E91; color: #fff; font-size: 13px; font-weight: 700">NV</span>
+      <span style="display: flex; flex-direction: column"><b style="font-size: 14px">[Tên nhân viên]</b><span style="font-size: 12px; color: #5B6B82">Admin</span></span>
+    </div>
+  </header>
+
+  <div style="padding: 28px; display: flex; flex-direction: column; gap: 18px">
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 12px">
+      <div>
+        <h1 style="margin: 0; font-size: 28px; font-weight: 700; color: #0A2B5C">Quản lý lịch tàu</h1>
+        <p style="margin: 6px 0 0; font-size: 14px; color: #5B6B82">Nhập tay từng chuyến · transit time tự tính từ ETD và ETA</p>
+      </div>
+      <button class="btn2" disabled="">Import Excel <span style="font-size: 11px; font-weight: 700; padding: 2px 7px; border-radius: 8px; background: #E2E8F0; color: #44546E">Sắp có</span></button>
+    </div>
+
+    <div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+      <section class="card" aria-label="Thêm chuyến tàu" style="flex: 1 1 340px; min-width: 0; padding: 18px 20px; display: flex; flex-direction: column; gap: 12px">
+        <h2 style="margin: 0; font-size: 17px; font-weight: 700">Thêm chuyến tàu</h2>
+        <label class="fld"><span>Hãng tàu</span><select><option>ONE</option><option>MSC</option></select></label>
+        <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
+          <label class="fld"><span>POL</span><select><option>Cát Lái</option></select></label>
+          <label class="fld"><span>POD</span><select><option>Los Angeles</option></select></label>
+          <label class="fld"><span>Tên tàu</span><input type="text" value="ONE HARMONY"></label>
+          <label class="fld"><span>Số chuyến</span><input type="text" value="2612E"></label>
+          <label class="fld"><span>ETD</span><input type="text" value="15/11/2026"></label>
+          <label class="fld"><span>ETA</span><input type="text" value="03/12/2026"></label>
+          <label class="fld"><span>Direct / Transit</span><select><option>Direct</option><option>Transit</option></select></label>
+          <label class="fld"><span>Cảng chuyển tải</span><input type="text" placeholder="Nếu Transit"></label>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border-radius: 8px; background: #EAF1FB; font-size: 13.5px; color: #1E3A66">
+          <span>Transit time</span><b>18 ngày</b>
+        </div>
+        <div style="display: flex; gap: 10px">
+          <button class="btn" style="flex: 1">Lưu chuyến</button>
+          <button class="btn2">Lưu &amp; thêm tiếp</button>
+        </div>
+      </section>
+
+      <section class="card" aria-label="Danh sách chuyến" style="flex: 999 1 600px; min-width: 0; overflow: hidden">
+        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px; padding: 16px 20px">
+          <h2 style="margin: 0; font-size: 17px; font-weight: 700">Chuyến sắp chạy · 64 chuyến</h2>
+          <div style="display: flex; gap: 8px">
+            <label class="fld" style="padding: 4px 10px"><span>POL</span><select><option>Tất cả</option></select></label>
+            <label class="fld" style="padding: 4px 10px"><span>Tháng</span><select><option>11/2026</option></select></label>
+          </div>
+        </div>
+        <div style="overflow-x: auto; border-top: 1px solid #DCE6F2">
+          <div class="sr" style="background: #F2F6FB; font-size: 12px; font-weight: 600; color: #33445E; border-bottom: 1px solid #DCE6F2">
+            <div>Hãng</div><div>Tàu / chuyến</div><div>Tuyến</div><div>ETD</div><div>ETA</div><div>Transit</div><div>Loại</div><div>Cập nhật</div><div></div>
+          </div>
+          <sc-for list="{{rows}}" as="r" hint-placeholder-count="8">
+            <div class="sr" style="font-size: 13.5px; border-bottom: 1px solid #E8EEF6; background: #fff">
+              <div><span style="{{r.logo}}">{{r.code}}</span></div>
+              <div><div style="font-weight: 600">{{r.vessel}}</div><div style="font-size: 12px; color: #5B6B82">{{r.voy}}</div></div>
+              <div>{{r.route}}</div><div style="font-weight: 600">{{r.etd}}</div><div>{{r.eta}}</div><div>{{r.tt}}</div>
+              <div><span style="{{r.typeStyle}}">{{r.type}}</span></div>
+              <div style="font-size: 12px; color: #5B6B82">{{r.at}}</div>
+              <div style="display: flex; gap: 6px">
+                <button class="ic" aria-label="Sửa chuyến"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16zM13 7l4 4"></path></svg></button>
+                <button class="ic" aria-label="Xóa chuyến" style="color: #B3261E"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"></path></svg></button>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </section>
+    </div>
+  </div>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1100}}'>
+class Component extends DCLogic {
+  renderVals() {
+    var C = {ONE:'#0B3A75',MSC:'#1F5FA8',EMC:'#0E7C66',CMA:'#8C2F39',WHL:'#8A4B08',YML:'#A0456E',COSCO:'#B4232C',KMTC:'#0F6E8C'};
+    var logo = function (c) { return 'display:inline-flex;align-items:center;justify-content:center;width:52px;height:28px;border-radius:6px;font-size:10px;font-weight:800;color:#fff;background:' + C[c]; };
+    var raw = [
+      ['WHL','WAN HAI 316','E089','Cát Lái → LAX','06/11','28/11','22 ngày','Transit','01/11'],
+      ['ONE','ONE HONG KONG','2611E','Cát Lái → LAX','08/11','26/11','18 ngày','Direct','01/11'],
+      ['MSC','MSC VIVIENNE','FA546A','Cát Lái → LAX','09/11','28/11','19 ngày','Direct','01/11'],
+      ['KMTC','KMTC SEOUL','2611N','Hải Phòng → Busan','09/11','14/11','5 ngày','Direct','02/11'],
+      ['CMA','CMA CGM MARCO POLO','0KV9AW','Cát Lái → LAX','10/11','27/11','17 ngày','Direct','02/11'],
+      ['MSC','MSC AURORA','FA712W','Cái Mép → Rotterdam','10/11','08/12','28 ngày','Direct','02/11'],
+      ['YML','YM WELLNESS','112E','Cát Lái → LAX','11/11','02/12','21 ngày','Transit','02/11'],
+      ['EMC','EVER LOVELY','1290-012E','Cát Lái → Kaohsiung','12/11','17/11','5 ngày','Direct','03/11']
+    ];
+    var rows = raw.map(function (r) { return { code: r[0], logo: logo(r[0]), vessel: r[1], voy: r[2], route: r[3], etd: r[4], eta: r[5], tt: r[6], type: r[7], at: r[8],
+      typeStyle: 'font-size:12px;font-weight:600;padding:3px 8px;border-radius:6px;' + (r[7] === 'Direct' ? 'background:#E3F4EA;color:#17663A' : 'background:#EAF1FB;color:#1E4F91') }; });
+    var navRaw = [['Dashboard','AdminDashboard.dc.html','M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z'],['Giá cước','AdminRates.dc.html','M3 12V4h8l9 9-8 8zM7.5 7.5h.01'],['Lịch tàu','AdminSchedule.dc.html','M4 6h16v14H4zM4 10h16M8 3v4M16 3v4'],['Hãng tàu & cảng','AdminMaster.dc.html','M12 3a2 2 0 1 0 0 4 2 2 0 0 0 0-4zM12 7v14M5 13a7 7 0 0 0 14 0M8 10h8'],['Tài khoản & cài đặt','AdminSettings.dc.html','M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M14 4v4M8 10v4M16 16v4']];
+    var nav = navRaw.map(function (n) { return { label: n[0], href: n[1], d: n[2], cls: n[1] === 'AdminSchedule.dc.html' ? 'nav on' : 'nav' }; });
+    return { rows: rows, nav: nav };
+  }
+}
+</script>
+</body>
+</html>

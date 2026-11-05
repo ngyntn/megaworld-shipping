@@ -1,0 +1,26 @@
+{
+    email {$ACME_EMAIL}
+}
+
+{$BACKEND_DOMAIN} {
+    encode gzip zstd
+    header {
+        X-Content-Type-Options nosniff
+        Referrer-Policy strict-origin-when-cross-origin
+        Strict-Transport-Security "max-age=31536000"
+        -Server
+    }
+    request_body {
+        max_size 3MB
+    }
+    # Allow only application routes. Operations/dashboard use an SSH tunnel.
+    @application path /api/health /api/megaworld/* /api/files/* /api/collections/staff/* /api/collections/storefronts/records* /api/collections/staff_settings/records* /api/collections/carriers/records* /api/collections/ports/records* /api/collections/routes/records* /api/collections/route_margins/records* /api/collections/rate_series/records* /api/collections/rate_versions/records* /api/collections/rate_costs/records* /api/collections/schedules/records* /api/collections/rate_schedules/records* /api/collections/search_daily_stats/records* /api/collections/import_jobs/records*
+    handle @application {
+        reverse_proxy pocketbase:8090 {
+            header_up X-Real-IP {remote_host}
+        }
+    }
+    handle {
+        respond "Not found" 404
+    }
+}

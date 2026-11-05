@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<title>Lịch sử giá</title>
+<script src="./vendor/react.js"></script>
+<script src="./vendor/react-dom.js"></script>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+*{box-sizing:border-box}
+a{color:#1E5FC2;text-decoration:none}a:hover{color:#0B3A75;text-decoration:underline}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 20px;border-radius:8px;border:0;background:#0B3A75;color:#fff;font:inherit;font-size:14px;font-weight:600;cursor:pointer;text-decoration:none}
+.btn:hover{background:#082C5A;color:#fff;text-decoration:none}
+.btn2{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 16px;border-radius:8px;border:1px solid #CFDBEA;background:#fff;color:#0B3A75;font:inherit;font-size:14px;font-weight:600;cursor:pointer;text-decoration:none}
+.seg{min-height:40px;padding:0 16px;border:0;background:#fff;font:inherit;font-size:13px;font-weight:600;color:#44546E;cursor:pointer}
+.ht{display:grid;grid-template-columns:150px 170px 100px 100px 130px minmax(0,1fr);align-items:center}
+.ht>div{padding:12px 14px;min-width:0}
+</style>
+</helmet>
+<div style="width: 960px; height: 760px; font-family: Inter, system-ui, sans-serif; color: #0F1E36; background: #3B4A63; display: flex; align-items: center; justify-content: center">
+  <div role="dialog" aria-modal="true" aria-labelledby="hTitle" style="width: 900px; background: #fff; border-radius: 14px; overflow: hidden; display: flex; flex-direction: column">
+    <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; padding: 20px 24px; border-bottom: 1px solid #E8EEF6">
+      <div style="display: flex; gap: 14px; align-items: center">
+        <span style="display: inline-flex; align-items: center; justify-content: center; width: 52px; height: 34px; border-radius: 6px; background: #0B3A75; color: #fff; font-size: 11px; font-weight: 800">ONE</span>
+        <div>
+          <h2 id="hTitle" style="margin: 0; font-size: 20px; font-weight: 700; color: #0A2B5C">Lịch sử giá</h2>
+          <div style="font-size: 13.5px; color: #5B6B82; margin-top: 3px">Cát Lái (VNCLI) → Los Angeles (USLAX) · Ocean Network Express</div>
+        </div>
+      </div>
+      <a href="Main.dc.html" aria-label="Đóng" style="display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 8px; color: #44546E">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg>
+      </a>
+    </div>
+
+    <div style="padding: 18px 24px; display: flex; flex-direction: column; gap: 16px">
+      <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px">
+        <div role="group" aria-label="Loại container" style="display: flex; border: 1px solid #CFDBEA; border-radius: 8px; overflow: hidden">
+          <sc-for list="{{conts}}" as="c" hint-placeholder-count="4">
+            <button class="seg" style="{{c.style}}" aria-pressed="{{c.pressed}}" onClick="{{c.pick}}">{{c.label}}</button>
+          </sc-for>
+        </div>
+        <div style="display: flex; gap: 22px; font-size: 13px; color: #44546E">
+          <span>Giá hiện hành <b style="font-size: 17px; color: #0B3A75">{{current}}</b></span>
+          <span>So với đợt trước <b style="color: #17663A">▼ $150</b></span>
+        </div>
+      </div>
+
+      <div style="border: 1px solid #DCE6F2; border-radius: 10px; overflow: hidden">
+        <div class="ht" style="background: #F2F6FB; font-size: 12px; font-weight: 600; color: #33445E; border-bottom: 1px solid #DCE6F2">
+          <div>Đợt giá</div><div>Validity</div><div>Giá cũ</div><div>Giá mới</div><div>Chênh lệch</div><div>Lịch tàu tương ứng</div>
+        </div>
+        <sc-for list="{{rows}}" as="r" hint-placeholder-count="5">
+          <div class="ht" style="{{r.rowStyle}}">
+            <div style="display: flex; flex-direction: column; gap: 4px"><span style="font-weight: 600">{{r.period}}</span><span style="{{r.tagStyle}}">{{r.tag}}</span></div>
+            <div style="font-size: 13px">{{r.validity}}</div>
+            <div style="color: #5B6B82">{{r.old}}</div>
+            <div style="font-weight: 700">{{r.neu}}</div>
+            <div><span style="{{r.diffStyle}}">{{r.diff}}</span></div>
+            <div style="font-size: 13px"><div style="font-weight: 600">{{r.vessel}}</div><div style="color: #5B6B82; font-size: 12px">{{r.sched}}</div></div>
+          </div>
+        </sc-for>
+      </div>
+      <p style="margin: 0; font-size: 12.5px; color: #5B6B82">Mỗi lần cập nhật giá cho cùng tuyến, hãng và loại container, giá cũ được lưu lại thành lịch sử — không bị xóa.</p>
+    </div>
+
+    <div style="display: flex; justify-content: flex-end; gap: 10px; padding: 16px 24px; border-top: 1px solid #E8EEF6; background: #FAFCFE">
+      <a href="Main.dc.html" class="btn2">Đóng</a>
+      <a href="QuoteContact.dc.html" class="btn">Yêu cầu báo giá</a>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":960,"height":760}}'>
+class Component extends DCLogic {
+  constructor(p) { super(p); this.state = { c: '40HC' }; }
+  renderVals() {
+    var self = this;
+    var off = { '20GP': -400, '40GP': 0, '40HC': 0, '45HC': 400 }[this.state.c];
+    var m = function (v) { return v == null ? '—' : '$' + (v + off).toLocaleString('en-US'); };
+    var conts = ['20GP', '40GP', '40HC', '45HC'].map(function (c) {
+      var on = c === self.state.c;
+      return { label: c, pressed: on ? 'true' : 'false', style: on ? 'background:#0B3A75;color:#fff' : '', pick: function () { self.setState({ c: c }); } };
+    });
+    var raw = [
+      ['Đợt 5', 'Hiện hành', '01/11 – 30/11/2026', 2200, 2050, 'ONE HONG KONG · 2611E', 'ETD 08/11 · ETA 26/11 · Direct'],
+      ['Đợt 4', 'Lịch sử', '16/10 – 31/10/2026', 2100, 2200, 'ONE HARMONY · 2608E', 'ETD 20/10 · ETA 07/11 · Direct'],
+      ['Đợt 3', 'Lịch sử', '01/10 – 15/10/2026', 2350, 2100, 'ONE MINATO · 2605E', 'ETD 06/10 · ETA 24/10 · Direct'],
+      ['Đợt 2', 'Lịch sử', '15/09 – 30/09/2026', 2300, 2350, 'ONE HAMBURG · 2602E', 'ETD 21/09 · ETA 09/10 · Direct'],
+      ['Đợt 1', 'Lịch sử', '01/09 – 14/09/2026', null, 2300, 'ONE APUS · 2599E', 'ETD 05/09 · ETA 23/09 · Direct']
+    ];
+    var rows = raw.map(function (r, i) {
+      var d = r[3] == null ? null : r[4] - r[3];
+      var diff = d == null ? 'Đợt đầu' : (d < 0 ? '▼ Giảm $' + (-d) : '▲ Tăng $' + d);
+      var ds = d == null ? 'color:#5B6B82;font-size:12.5px' : (d < 0 ? 'font-size:12.5px;font-weight:700;padding:3px 8px;border-radius:6px;background:#E3F4EA;color:#17663A' : 'font-size:12.5px;font-weight:700;padding:3px 8px;border-radius:6px;background:#FDECEC;color:#B3261E');
+      return { period: r[0], tag: r[1], validity: r[2], old: r[3] == null ? '—' : m(r[3]), neu: m(r[4]), diff: diff, diffStyle: ds, vessel: r[5], sched: r[6],
+        tagStyle: i === 0 ? 'font-size:11px;font-weight:700;color:#17663A;background:#E3F4EA;border-radius:10px;padding:1px 8px;align-self:flex-start' : 'font-size:11px;font-weight:600;color:#5B6B82',
+        rowStyle: 'font-size:13.5px;border-bottom:1px solid #E8EEF6;' + (i === 0 ? 'background:#F5F9FF' : 'background:#fff') };
+    });
+    return { conts: conts, rows: rows, current: m(2050) };
+  }
+}
+</script>
+</body>
+</html>

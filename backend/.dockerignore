@@ -1,0 +1,14 @@
+bin
+pb_data
+demo_data
+.test-data
+backups
+.env
+.env.*
+.demo-credentials.json
+.release-validation
+deploy/secrets
+__pycache__
+**/__pycache__
+*.pyc
+tests

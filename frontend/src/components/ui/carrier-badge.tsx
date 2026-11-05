@@ -1,0 +1,2 @@
+const colors: Record<string, string> = { ONE: '#0B3A75', MSC: '#1F5FA8', EMC: '#0E7C66', CMA: '#8C2F39', TSL: '#6B3FA0', WHL: '#8A4B08', YML: '#A0456E', COSCO: '#B4232C', MSK: '#2F6DA8', KMTC: '#0F6E8C', SNK: '#4A5568', IAL: '#2F5D50' };
+export function CarrierBadge({ code }: { code: string }) { return <span className="carrier-badge" style={{ background: colors[code] || '#1D4E91' }}>{code}</span>; }
