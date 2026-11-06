@@ -8,7 +8,11 @@ import type { RecordModel } from "pocketbase";
  */
 export function carrierLogoUrl(pb: PocketBase, carrier: { id: string; logo?: string }) {
   if (!carrier.logo) return "";
-  return pb.files.getURL({ ...carrier, collectionName: "carriers" } as RecordModel, carrier.logo);
+  const url = pb.files.getURL({ ...carrier, collectionName: "carriers" } as RecordModel, carrier.logo);
+  // The server talks to PocketBase over an internal address; browsers need the public one.
+  const publicBase = process.env.POCKETBASE_PUBLIC_URL?.replace(/\/+$/, "");
+  const internalBase = pb.baseURL.replace(/\/+$/, "");
+  return publicBase && url.startsWith(internalBase) ? publicBase + url.slice(internalBase.length) : url;
 }
 
 /** Map carrier id and code → logo URL, for data sources that only return carrier codes or ids. */
