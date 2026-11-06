@@ -1,9 +1,8 @@
 "use client";
 import { useCallback, useState } from "react";
 import { StickyNote } from "lucide-react";
-import { ModalSurface } from "@/components/ui/modal-surface";
 import { useWhiteboardShortcut } from "../hooks/use-whiteboard-shortcut";
-import { WhiteboardDialog } from "./whiteboard-dialog";
+import { WhiteboardWindow } from "./whiteboard-window";
 
 /**
  * Sidebar entry that opens the whiteboard popup from any admin page.
@@ -19,11 +18,7 @@ export function WhiteboardButton() {
     <>
       <button type="button" className="nav" onClick={openBoard}>
         <StickyNote size={18} strokeWidth={1.9} />Bảng trắng      </button>
-      {open && (
-        <ModalSurface className="whiteboard-backdrop" label="Bảng trắng" onClosed={() => setOpen(false)}>
-          <WhiteboardDialog />
-        </ModalSurface>
-      )}
+      {open && <WhiteboardWindow onClosed={() => setOpen(false)} />}
     </>
   );
 }

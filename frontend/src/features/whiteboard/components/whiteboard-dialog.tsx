@@ -6,7 +6,9 @@ import { useModalDismiss } from "@/components/ui/modal-context";
 import { useWhiteboard } from "../hooks/use-whiteboard";
 import { useWhiteboardShortcut } from "../hooks/use-whiteboard-shortcut";
 
-export function WhiteboardDialog() {
+type Props = { dragProps: React.HTMLAttributes<HTMLElement> };
+
+export function WhiteboardDialog({ dragProps }: Props) {
   const dismiss = useModalDismiss();
   useWhiteboardShortcut(dismiss);
   const toast = useToast();
@@ -26,7 +28,7 @@ export function WhiteboardDialog() {
   }
   return (
     <section className="whiteboard" aria-labelledby="whiteboard-title">
-      <header className="whiteboard-header">
+      <header className="whiteboard-header" {...dragProps}>
         <h1 id="whiteboard-title">Bảng trắng</h1>
         <div className="whiteboard-actions">
           <button type="button" className="wb-icon-btn" aria-label="Tạo bảng mới" title="Tạo bảng mới" onClick={startNew}>

@@ -1,17 +1,16 @@
 /* Whiteboard popup — features/whiteboard. Sized like the price-history popup, with a little more height. */
-.whiteboard-backdrop { position:fixed; inset:0; width:100%; height:100%; max-width:none; max-height:none; min-height:0; margin:0; border:0; padding:24px; background:transparent; color:#0f1e36; overflow:clip; display:flex; align-items:center; justify-content:center; }
-.whiteboard-backdrop:not([open]) { display:none; }
-.whiteboard-backdrop::backdrop { background:rgba(15,30,54,.28); backdrop-filter:blur(3px); }
-.whiteboard-backdrop[open] { animation:wb-fade-in .2s ease-out both; }
-.whiteboard-backdrop[open].is-closing { animation:wb-fade-out .22s ease-in both; }
-.whiteboard { position:relative; width:1080px; max-width:100%; height:min(660px,calc(100dvh - 48px)); display:flex; flex-direction:column; overflow:hidden; background:#fff; border-radius:14px; box-shadow:0 20px 64px #0a2b5c33; animation:wb-pop-in .22s cubic-bezier(.2,.8,.2,1) both; }
-.whiteboard-backdrop.is-closing .whiteboard { animation:wb-pop-out .22s ease-in both; }
+/* Non-modal floating window: no backdrop/blur; position and size are set inline by useFloatingWindow. */
+.whiteboard-window { position:fixed; z-index:60; color:#0f1e36; }
+.whiteboard-window.is-closing { animation:wb-fade-out .22s ease-in both; }
+.whiteboard { position:relative; width:100%; height:100%; display:flex; flex-direction:column; overflow:hidden; background:#fff; border-radius:14px; box-shadow:0 20px 64px #0a2b5c40, 0 0 0 1px #d9e3f0; animation:wb-pop-in .22s cubic-bezier(.2,.8,.2,1) both; }
+.whiteboard-window.is-closing .whiteboard { animation:wb-pop-out .22s ease-in both; }
+.wb-resize { position:absolute; right:0; bottom:0; width:22px; height:22px; cursor:nwse-resize; touch-action:none; z-index:6; background:linear-gradient(135deg,transparent 0 55%,#9aa9bd 55% 62%,transparent 62% 72%,#9aa9bd 72% 79%,transparent 79%); border-bottom-right-radius:14px; }
 @keyframes wb-fade-in { from { opacity:0; } to { opacity:1; } }
 @keyframes wb-fade-out { to { opacity:0; } }
 @keyframes wb-pop-in { from { opacity:0; transform:translateY(8px) scale(.99); } to { opacity:1; transform:translateY(0) scale(1); } }
 @keyframes wb-pop-out { to { opacity:0; transform:translateY(8px) scale(.99); } }
 
-.whiteboard-header { display:flex; align-items:center; justify-content:space-between; gap:16px; padding:16px 24px; border-bottom:1px solid #e8eef6; flex-shrink:0; }
+.whiteboard-header { cursor:grab; touch-action:none; user-select:none; display:flex; align-items:center; justify-content:space-between; gap:16px; padding:16px 24px; border-bottom:1px solid #e8eef6; flex-shrink:0; }
 .whiteboard-header h1 { margin:0; font-size:20px; font-weight:700; color:#0b3a75; }
 .whiteboard-header p { margin:4px 0 0; font-size:13px; color:#5b6b82; }
 .whiteboard-actions { display:flex; gap:6px; flex-shrink:0; }
@@ -36,7 +35,7 @@
 .wb-caret.snap { transition:none; }
 @keyframes wb-blink { 0%,100% { opacity:1; } 50% { opacity:0; } }
 @media (prefers-reduced-motion:reduce) {
-  .whiteboard-backdrop[open], .whiteboard { animation:none; }
+  .whiteboard-window.is-closing, .whiteboard { animation:none; }
   .wb-caret { transition:none; }
 }
 
