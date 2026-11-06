@@ -7,6 +7,7 @@ from support import instance
 from test_access import check_access
 from test_rates import check_rates
 from test_operations import check_operations
+from test_workspace import check_workspace
 from test_workbook import check_workbook
 from test_seed import check_seed
 from test_restore import check_restore
@@ -19,6 +20,7 @@ def main():
         fixtures = check_access(backend)
         check_rates(backend, fixtures)
         check_operations(backend)
+        check_workspace(backend)
         check_seed(backend)
         check_restore(backend)
         check_production(backend)

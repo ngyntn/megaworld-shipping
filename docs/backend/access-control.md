@@ -19,6 +19,7 @@ Tất cả quyền nhân viên yêu cầu đăng nhập collection `staff`, `act
 | schedules | Lọc lịch scheduled và tải XLSX lịch tàu | Xem; custom API tạo/sửa/hủy, kiểm tra revision | Chỉ xem phần công khai |
 | rate_schedules | Snapshot công khai trong lịch sử | Xem; ghi qua API lưu giá | Không đọc records API |
 | search_daily_stats, import_jobs | Không đọc; gửi sự kiện tra tuyến hợp lệ | Xem; server ghi thống kê, preview/commit import riêng owner | Không |
+| workspace_events, workspace_notes, saved_quotes | Không | Tạo/sửa/xem/xóa bản ghi của mình | Không |
 | realtime | Không | Không | Không |
 
 Superuser là người vận hành tin cậy, có toàn quyền ngoài ma trận. Không dùng superuser cho nhân viên

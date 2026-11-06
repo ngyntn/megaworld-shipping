@@ -13,7 +13,8 @@ import urllib.request
 
 ROOT = Path(__file__).resolve().parents[1]
 COLLECTIONS = {"staff", "storefronts", "staff_settings", "carriers", "ports", "routes", "route_margins",
-               "rate_series", "rate_versions", "rate_costs", "schedules", "rate_schedules", "search_daily_stats", "import_jobs"}
+               "rate_series", "rate_versions", "rate_costs", "schedules", "rate_schedules", "search_daily_stats", "import_jobs",
+               "workspace_events", "workspace_notes", "saved_quotes"}
 
 
 class Backend:
@@ -90,14 +91,14 @@ class Backend:
 
     def rollback_and_reapply(self):
         self.stop()
-        assert self.cli("migrate", "down", "6", input_text="y\n").count("Reverted") == 6
+        assert self.cli("migrate", "down", "8", input_text="y\n").count("Reverted") == 8
         self.cli("migrate", "up")
         self.cli("migrate", "up")
         self.start()
         schema = self.api("/api/collections?perPage=100", token=self.token)["items"]
         assert COLLECTIONS.issubset({record["name"] for record in schema})
         assert not self.records("staff", self.token)
-        print("PASS: rollback/reapply all 6 migrations and restart")
+        print("PASS: rollback/reapply all 8 migrations and restart")
 
 
 @contextlib.contextmanager

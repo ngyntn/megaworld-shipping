@@ -3,7 +3,8 @@ onRecordValidate((e) => {
   require(__hooks + "/lib/security.js").validateRecord(e.app, e.record);
   e.next();
 }, "storefronts", "staff_settings", "carriers", "ports", "routes", "route_margins", "rate_series",
-"rate_versions", "rate_costs", "schedules", "rate_schedules", "search_daily_stats", "import_jobs");
+"rate_versions", "rate_costs", "schedules", "rate_schedules", "search_daily_stats", "import_jobs",
+"workspace_events", "workspace_notes", "saved_quotes");
 
 onRecordUpdateRequest((e) => {
   if (!e.hasSuperuserAuth()) {

@@ -61,7 +61,11 @@ function validateRecord(app, record) {
     v.day(record.getString(to), to);
     if (record.getString(from) > record.getString(to)) throw new BadRequestError(to + " must not precede " + from + ".");
   }
-  if (name === "search_daily_stats") v.day(record.getString("day"), "day");
+  if (name === "search_daily_stats" || name === "workspace_events") v.day(record.getString("day"), "day");
+  if (name === "saved_quotes") v.day(record.getString("valid_to"), "valid_to");
+  if (name === "workspace_notes" && !record.getString("title").trim() && !record.getString("body").trim()) {
+    throw new BadRequestError("Note is empty.");
+  }
 }
 
 module.exports = { staff, owned, active, storefront, validateRecord };

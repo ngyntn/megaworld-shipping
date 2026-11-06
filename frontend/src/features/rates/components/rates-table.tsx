@@ -3,6 +3,7 @@ import { useRateModals } from "../hooks/use-rate-modals";
 import { Pencil, Copy, History } from "lucide-react";
 import { CarrierLogo } from "@/components/ui/carrier-logo";
 import { Checkbox } from "@/components/ui/checkbox";
+import { SaveQuoteButton } from "@/features/workspace/components/save-quote-button";
 import { money, shortDate, timestamp } from "@/lib/format";
 import type { RateList } from "../types";
 import type { useRateList } from "../hooks/use-rate-list";
@@ -180,6 +181,10 @@ export function RatesTable({
                     >
                       <History size={16} />
                     </button>
+                    <SaveQuoteButton
+                      label={`${r.carrierCode} · ${r.pol} → ${r.pod}`}
+                      options={group.map((line) => ({ id: line.id, container_type: line.container_type, sell_price_cents: line.sell_price_cents }))}
+                    />
                   </div>
                 </td>
               </tr>

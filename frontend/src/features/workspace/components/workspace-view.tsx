@@ -1,9 +1,9 @@
+import type { WorkspaceData } from "../types";
 import { CalendarCard } from "./calendar-card";
 import { NotesCard } from "./notes-card";
 import { SavedQuotesCard } from "./saved-quotes-card";
 
-/** Layout only: calendar, saved quotes and personal notes use placeholder data for now. */
-export function WorkspaceView() {
+export function WorkspaceView({ data }: { data: WorkspaceData }) {
   return (
     <div className="op-content">
       <div className="op-title">
@@ -13,10 +13,11 @@ export function WorkspaceView() {
         </div>
       </div>
       <div className="ws-grid">
-        <CalendarCard />
+        {/* Keyed by month so the selected day resets when navigating months. */}
+        <CalendarCard key={data.month} month={data.month} today={data.today} events={data.events} />
         <div className="ws-side">
-          <SavedQuotesCard />
-          <NotesCard />
+          <SavedQuotesCard quotes={data.quotes} today={data.today} />
+          <NotesCard notes={data.notes} />
         </div>
       </div>
     </div>

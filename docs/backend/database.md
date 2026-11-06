@@ -32,6 +32,9 @@ Quy tắc áp dụng: [business-rules.md](business-rules.md).
 | `rate_schedules` | rate_version, schedule, snapshot JSON | Lịch tàu tại thời điểm lưu giá |
 | `search_daily_stats` | route, day, search_count | Riêng; server tăng số đếm |
 | `import_jobs` | file_name, status, total_rows, valid_rows, imported_rows, errors/payload/results JSON | Riêng; không lưu file Excel gốc, xóa payload sau commit |
+| `workspace_events` | title, day, time (HH:MM, tùy chọn), category | Riêng; lịch làm việc ở Không gian của tôi |
+| `workspace_notes` | title (có thể trống), body, kind (quote, customer, schedule, reminder, other) | Riêng; ghi chú cá nhân tự lưu, phải có tiêu đề hoặc nội dung |
+| `saved_quotes` | rate_version (text), route_label, carrier_code, container_type, price_cents, valid_to | Riêng; snapshot giá, không chặn sửa/xóa dòng giá |
 
 `snapshot` dự kiến gồm `vessel_name`, `voyage`, `etd`, `eta`, `service_type`, `transshipment_port`.
 Hook bước sau cần validate và tự tạo snapshot; không nhận JSON tùy ý từ khách.
@@ -94,6 +97,8 @@ Không tạo view SQL join giá bán với bảng giá gốc để công khai.
 | `1793740803_operations.js` | schedules, rate_schedules, search_daily_stats, import_jobs |
 | `1793740804_access_rules.js` | Rules nhân viên theo owner; khóa ghi trực tiếp các bảng giá |
 | `1793740805_operations_api.js` | Revision lịch tàu, payload/results và số dòng hợp lệ của import |
+| `1793740806_workspace.js` | workspace_events, workspace_notes, saved_quotes (rules owner, cho phép xóa) |
+| `1793740807_note_kinds.js` | Ghi chú: đổi color thành kind (chuyển dữ liệu), cho phép tiêu đề trống |
 
 Mỗi migration chạy trong transaction. Có hàm down theo thứ tự ngược dependency.
 **Down xóa collection và dữ liệu**; chỉ dùng thử trên database kiểm thử trống hoặc bản sao.
