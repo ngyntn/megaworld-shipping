@@ -9,7 +9,7 @@ function readNote(transfer: DataTransfer) {
   try {
     const value = JSON.parse(transfer.getData(NOTE_MIME));
     const kind: NoteKind = noteKinds.includes(value?.kind) ? value.kind : "other";
-    return { title: String(value?.title ?? ""), body: String(value?.body ?? ""), kind };
+    return { title: String(value?.title ?? ""), body: String(value?.body ?? ""), tag: typeof value?.tag === "string" ? value.tag : "", kind };
   } catch {
     return null;
   }
@@ -27,6 +27,7 @@ export function useNoteDrop(onCreated: (day: string) => void) {
     form.set("title", title);
     form.set("day", day);
     form.set("time", "");
+    form.set("tag", note.tag);
     form.set("category", noteKindMeta[note.kind].category);
     run(() => saveEvent("", form), () => onCreated(day));
   }

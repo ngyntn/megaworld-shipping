@@ -8,6 +8,8 @@ import { ModalSurface } from "@/components/ui/modal-surface";
 import { ScheduleImportDialog } from "./schedule-import-dialog";
 import { CarrierLogo } from "@/components/ui/carrier-logo";
 import { Checkbox } from "@/components/ui/checkbox";
+import { ExportButton } from "@/features/excel-export/components/export-button";
+import { matchesScheduleSearch } from "../utils";
 import { SelectionBar } from "@/features/bulk-delete/components/selection-bar";
 import { useBulkDelete } from "@/features/bulk-delete/hooks/use-bulk-delete";
 import { useRowSelection } from "@/features/bulk-delete/hooks/use-row-selection";
@@ -37,11 +39,7 @@ export function SchedulesView({
     [search, setSearch] = useState(""),
     [month, setMonth] = useState(""),
     [importing, setImporting] = useState(false);
-  const rows = s.list.items.filter((r) =>
-    `${r.vessel_name} ${r.voyage} ${r.route.pol.name} ${r.route.pod.name} ${r.carrier.code}`
-      .toLowerCase()
-      .includes(search.toLowerCase()),
-  );
+  const rows = s.list.items.filter((r) => matchesScheduleSearch(r, search));
   const selection = useRowSelection(rows.map((r) => r.id));
   const bulk = useBulkDelete("schedules", () => {
     selection.clear();
@@ -60,10 +58,13 @@ export function SchedulesView({
             <h1>Quản lý lịch tàu</h1>
             <p>Nhập tay từng chuyến · transit time tự tính từ ETD và ETA</p>
           </div>
-          <button type="button" className="btn2" onClick={() => setImporting(true)}>
-            <Upload size={16} />
-            Import Excel
-          </button>
+          <div className="dashboard-actions">
+            <ExportButton kind="schedules" selectedIds={selection.selected} selectedCount={selection.selected.length} filters={{ ...s.query, q: search }} disabled={s.pending || bulk.pending} />
+            <button type="button" className="btn2" onClick={() => setImporting(true)}>
+              <Upload size={16} />
+              Import Excel
+            </button>
+          </div>
         </div>
         <div className="op-columns">
           <ScheduleForm state={s} catalog={catalog} />

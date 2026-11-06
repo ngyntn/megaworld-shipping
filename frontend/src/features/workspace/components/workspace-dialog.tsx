@@ -16,7 +16,7 @@ type Props = {
 /** Centered dialog shared by the calendar, note and saved-quote forms. */
 export function WorkspaceDialog({ title, onClosed, size = "md", aside, children }: Props) {
   return (
-    <ModalSurface className={`ws-dialog ${size === "lg" ? "ws-dialog-lg" : ""}`} label={title} onClosed={onClosed}>
+    <ModalSurface className={`ws-dialog ${size === "lg" ? "ws-dialog-lg" : ""}`} label={title} onClosed={onClosed} initialFocus="[data-initial-focus]">
       <header className="ws-dialog-head">
         <h2>{title}</h2>
         <div className="ws-dialog-aside">

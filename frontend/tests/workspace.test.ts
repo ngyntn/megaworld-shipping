@@ -2,12 +2,34 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { parseEventInput, parseNoteInput } from "../src/features/workspace/schemas/workspace-input.ts";
 import { monthCells, monthRange, noteEventTitle, savedLabel, shiftMonth, isMonthKey } from "../src/features/workspace/utils.ts";
+import { parseTagInput } from "../src/features/workspace/schemas/tag-input.ts";
+import { tagColors } from "../src/features/workspace/tags.ts";
 
 const form = (values: Record<string, string>) => {
   const data = new FormData();
   for (const [key, value] of Object.entries(values)) data.set(key, value);
   return data;
 };
+
+test("shared tags accept only the ten pastel colors and a bounded name", () => {
+  assert.equal(Object.keys(tagColors).length, 10);
+  for (const color of Object.keys(tagColors)) assert.deepEqual(parseTagInput(form({ name: " Follow up ", color })), { name: "Follow up", color });
+  for (const name of [" ", "a".repeat(41)]) assert.throws(() => parseTagInput(form({ name, color: "blue" })));
+  for (const color of ["red", "#ffffff", "__proto__"]) assert.throws(() => parseTagInput(form({ name: "A", color })));
+});
+
+test("events and notes preserve or clear the same tag id and reject malformed ids", () => {
+  const event = { title: "A", day: "2026-11-06", category: "other" };
+  const note = { title: "A", kind: "other" };
+  for (const tag of ["", "a".repeat(15)]) {
+    assert.equal(parseEventInput(form({ ...event, tag })).tag, tag);
+    assert.equal(parseNoteInput({ ...note, tag }).tag, tag);
+  }
+  for (const tag of ["bad", "<script>"]) {
+    assert.throws(() => parseEventInput(form({ ...event, tag })));
+    assert.throws(() => parseNoteInput({ ...note, tag }));
+  }
+});
 
 test("event input trims text and accepts an all-day item", () => {
   assert.deepEqual(parseEventInput(form({ title: "  Gọi khách ", day: "2026-11-06", time: "", category: "customer" })), {

@@ -54,6 +54,10 @@ function validateRecord(app, record) {
     }
   }
   const v = require(__hooks + "/lib/validation.js");
+  if ((name === "workspace_events" || name === "workspace_notes") && record.getString("tag")) {
+    owned(app, "workspace_tags", record.getString("tag"), owner);
+  }
+  if (name === "workspace_tags" && !record.getString("name").trim()) throw new BadRequestError("Tag name is required.");
   if (name === "rate_versions" || name === "schedules") {
     const from = name === "schedules" ? "etd" : "valid_from";
     const to = name === "schedules" ? "eta" : "valid_to";

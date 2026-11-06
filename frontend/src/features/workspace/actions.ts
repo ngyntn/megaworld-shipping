@@ -2,7 +2,16 @@
 import { requireSession } from "@/features/auth/services/session";
 import { operationError } from "@/features/operations/services/errors";
 import type { Result } from "@/features/operations/types";
-import { parseEventInput, parseNoteInput } from "./schemas/workspace-input";
+import { isDay, parseEventInput, parseNoteInput } from "./schemas/workspace-input";
+
+import { parseTagInput } from "./schemas/tag-input";
+import { getWorkspaceTags } from "./services/workspace";
+import type { WorkspaceTag } from "./types";
+
+export async function loadWorkspaceTags(): Promise<Result & { tags?: WorkspaceTag[] }> {
+  try { return { tags: await getWorkspaceTags() }; }
+  catch (e) { return operationError(e); }
+}
 
 const ID = /^[a-z0-9]{15}$/;
 /** Server actions receive untrusted input: only PocketBase ids ("" allowed when creating). */
@@ -24,6 +33,26 @@ export async function saveEvent(id: string, form: FormData): Promise<Result> {
   }
 }
 
+/** Move an existing calendar item without changing its text, time or tag. */
+export async function moveEvent(id: string, day: string): Promise<Result> {
+  const { pb } = await requireSession();
+  try {
+    checkId(id);
+    if (typeof day !== "string" || !isDay(day)) throw new Error("Chọn ngày hợp lệ.");
+    await pb.collection("workspace_events").update(id, { day });
+    return { success: "Đã chuyển ngày ghi chú." };
+  } catch (e) { return operationError(e); }
+}
+
+export async function reorderNote(id: string, targetId: string): Promise<Result> {
+  const { pb } = await requireSession();
+  try {
+    checkId(id); checkId(targetId);
+    await pb.send("/api/megaworld/admin/workspace/notes/reorder", { method: "POST", body: { id, target_id: targetId } });
+    return {};
+  } catch (e) { return operationError(e); }
+}
+
 /** Autosave target: creates the note on first save and returns its id for later updates. */
 export async function saveNote(id: string, input: unknown): Promise<Result & { id?: string }> {
   const { pb, staff } = await requireSession();
@@ -40,6 +69,7 @@ export async function saveNote(id: string, input: unknown): Promise<Result & { i
 }
 
 const removable = {
+  workspace_tags: "Đã xóa nhãn.",
   workspace_events: "Đã xóa lịch.",
   workspace_notes: "Đã xóa ghi chú.",
   saved_quotes: "Đã xóa báo giá đã lưu.",
@@ -87,4 +117,15 @@ export async function saveQuote(rateVersionId: string): Promise<Result> {
   } catch (e) {
     return operationError(e);
   }
+}
+
+export async function saveTag(id: string, form: FormData): Promise<Result> {
+  const { pb, staff } = await requireSession();
+  try {
+    checkId(id, true);
+    const input = parseTagInput(form);
+    if (id) await pb.collection("workspace_tags").update(id, input);
+    else await pb.collection("workspace_tags").create({ ...input, owner: staff.id });
+    return { success: "Đã lưu nhãn." };
+  } catch (e) { return operationError(e); }
 }

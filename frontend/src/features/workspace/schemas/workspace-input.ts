@@ -1,7 +1,7 @@
 import type { EventCategory, NoteKind } from "../types";
 
-export type EventInput = { title: string; day: string; time: string; category: EventCategory };
-export type NoteInput = { title: string; body: string; kind: NoteKind };
+export type EventInput = { title: string; day: string; time: string; category: EventCategory; tag?: string };
+export type NoteInput = { title: string; body: string; kind: NoteKind; tag?: string };
 
 const CATEGORIES: readonly string[] = ["customer", "rate", "schedule", "other"];
 const KINDS: readonly string[] = ["quote", "customer", "schedule", "reminder", "other"];
@@ -23,7 +23,7 @@ export function parseEventInput(form: FormData): EventInput {
   if (!isDay(day)) throw new Error("Chọn ngày hợp lệ.");
   if (time && !/^([01]\d|2[0-3]):[0-5]\d$/.test(time)) throw new Error("Giờ phải theo dạng HH:MM.");
   if (!CATEGORIES.includes(category)) throw new Error("Chọn loại lịch hợp lệ.");
-  return { title, day, time, category: category as EventCategory };
+  return { title, day, time, category: category as EventCategory, ...parseTag(form.get("tag")) };
 }
 
 /** Notes autosave as plain objects; an empty title is allowed as long as the note has some text. */
@@ -37,5 +37,11 @@ export function parseNoteInput(input: unknown): NoteInput {
   if (title.length > 120) throw new Error("Tiêu đề ghi chú tối đa 120 ký tự.");
   if (body.length > 2000) throw new Error("Nội dung ghi chú tối đa 2000 ký tự.");
   if (!KINDS.includes(kind)) throw new Error("Chọn loại ghi chú hợp lệ.");
-  return { title, body, kind: kind as NoteKind };
+  return { title, body, kind: kind as NoteKind, ...parseTag(value.tag) };
+}
+
+function parseTag(value: unknown): { tag?: string } {
+  if (value == null) return {};
+  if (typeof value !== "string" || (value !== "" && !/^[a-z0-9]{15}$/.test(value))) throw new Error("Nhãn không hợp lệ.");
+  return { tag: value };
 }

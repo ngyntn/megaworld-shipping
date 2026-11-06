@@ -35,13 +35,14 @@ export function WhiteboardWindow({ onClosed }: { onClosed: () => void }) {
         aria-label="Bảng trắng"
         style={frame ? { left: frame.x, top: frame.y, width: frame.w, height: frame.h } : { visibility: "hidden" }}
         onKeyDown={(e) => {
+          if (e.target instanceof Element && e.target.closest("dialog[open]")) return;
           if (e.key === "Escape") {
             e.preventDefault();
             dismiss();
           }
         }}
       >
-        <WhiteboardDialog dragProps={dragProps} />
+        {frame && <WhiteboardDialog dragProps={dragProps} />}
         <div className="wb-resize" aria-hidden="true" {...resizeProps} />
       </div>
     </ModalDismissContext>

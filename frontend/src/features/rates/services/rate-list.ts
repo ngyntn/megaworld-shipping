@@ -7,6 +7,9 @@ import { getCatalog } from "./catalog";
 import { vietnamToday } from "./queries";
 import { groupRates, type GroupFields } from "../utils";
 import type { RateList, RateRecord } from "../types";
+import type { ExportRequest } from "@/features/excel-export/types";
+import { exportRows } from "@/features/excel-export/selection";
+import { ExportError } from "@/features/excel-export/schemas/export-request";
 
 const TABS = ["current", "soon", "expired", "history", "all"] as const;
 type Tab = (typeof TABS)[number];
@@ -55,7 +58,7 @@ function tabsOf(r: { is_current: boolean; valid_from: string; valid_to: string }
 type Line = GroupFields & { id: string };
 
 /** Tab counts, pages and the table rows are all in "dòng giá" (grouped rows), not container lines. */
-export async function getRates(params: Record<string, string | undefined>): Promise<RateList> {
+export async function getRates(params: Record<string, string | undefined>, exporting?: ExportRequest): Promise<RateList> {
   const { pb } = await requireSession();
   const catalog = await getCatalog();
   const today = vietnamToday();
@@ -113,17 +116,20 @@ export async function getRates(params: Record<string, string | undefined>): Prom
   const pageSize = tab === "all" ? 9 : RATE_PAGE_SIZE;
   const pages = Math.max(1, Math.ceil(inTab.length / pageSize));
   const page = Math.min(pages, Math.max(1, Number.parseInt(params.page || "1", 10) || 1));
-  const pageLines = inTab.slice((page - 1) * pageSize, page * pageSize).flat();
+  const pageLines = (exporting ? exportRows(inTab, exporting) : inTab.slice((page - 1) * pageSize, page * pageSize)).flat();
 
   // 3. Full details only for the lines shown on this page.
-  const details = pageLines.length
-    ? await pb.collection("rate_versions").getFullList({
-        filter: pageLines.map((l) => pb.filter("id = {:id}", { id: l.id })).join(" || "),
+  const details: RecordModel[] = [];
+  // Keep request URLs bounded when exporting all filtered rows, regardless of page count.
+  for (let offset = 0; offset < pageLines.length; offset += 80) {
+    details.push(...await pb.collection("rate_versions").getFullList({
+        filter: pageLines.slice(offset, offset + 80).map((l) => pb.filter("id = {:id}", { id: l.id })).join(" || "),
         expand: "series,series.route,series.carrier,series.route.pol,series.route.pod",
         requestKey: null,
-      })
-    : [];
+      }));
+  }
   const byId = new Map(details.map((r) => [r.id, r]));
+  if (exporting && pageLines.some(line => !byId.has(line.id))) throw new ExportError("Dữ liệu vừa thay đổi. Hãy tải lại danh sách rồi xuất lại.", 409);
   const items = pageLines.flatMap((line): RateRecord[] => {
     const r = byId.get(line.id);
     return r ? [toRecord(r, line, costOf.get(line.id), catalog.carriers)] : [];

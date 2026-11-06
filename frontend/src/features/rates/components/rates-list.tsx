@@ -13,6 +13,7 @@ import { RatesTable } from "./rates-table";
 import { useRateModals } from "../hooks/use-rate-modals";
 import { SelectionBar } from "@/features/bulk-delete/components/selection-bar";
 import { useBulkDelete } from "@/features/bulk-delete/hooks/use-bulk-delete";
+import { ExportButton } from "@/features/excel-export/components/export-button";
 type Props = {
   catalog: Catalog;
   data: RateList;
@@ -47,6 +48,7 @@ export function RatesList({ catalog, data, params }: Props) {
           </p>
         </div>
         <div className="dashboard-actions">
+          <ExportButton kind="rates" selectedIds={chosen.flat().map(line => line.id)} selectedCount={chosen.length} filters={params} disabled={pending || bulk.pending} />
           <button type="button" className="btn2" onClick={() => modals.open({ kind: "import" })}>
             <Upload size={16} />
             Import Excel

@@ -4,6 +4,11 @@
  */
 export type Line = { b: boolean; t: string; img?: string };
 
+/** Personal notes store plain text; keep line breaks and list markers. */
+export function boardNoteText(lines: Line[]) {
+  return lines.filter(line => !line.img).map(line => line.b ? `- ${line.t}` : line.t).join("\n").trim();
+}
+
 /** "1. " / "12. " at the start of a line marks a heading. */
 export const HEADING = /^\s*\d+\.\s/;
 /** "- " at the start of a line becomes a bullet. */

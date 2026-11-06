@@ -1,19 +1,30 @@
 "use client";
-import { Eraser } from "lucide-react";
+import { useState } from "react";
+import { ArrowDownToLine, Eraser } from "lucide-react";
 import { useConfirm } from "@/components/ui/confirm-provider";
 import { useToast } from "@/components/feedback/toast-provider";
 import { useModalDismiss } from "@/components/ui/modal-context";
 import { useWhiteboard } from "../hooks/use-whiteboard";
 import { useWhiteboardShortcut } from "../hooks/use-whiteboard-shortcut";
+import { read } from "../editor-dom";
+import { boardNoteText } from "../utils";
+import { SaveBoardNoteDialog, type BoardNoteDraft } from "./save-board-note-dialog";
 
 type Props = { dragProps: React.HTMLAttributes<HTMLElement> };
 
 export function WhiteboardDialog({ dragProps }: Props) {
   const dismiss = useModalDismiss();
-  useWhiteboardShortcut(dismiss);
+  const [draft, setDraft] = useState<BoardNoteDraft | null>(null);
+  useWhiteboardShortcut(() => { if (!draft) dismiss(); });
   const toast = useToast();
   const board = useWhiteboard(toast);
   const ask = useConfirm();
+  function saveAsNote() {
+    const lines = board.editorRef.current ? read(board.editorRef.current) : [];
+    const body = boardNoteText(lines);
+    if (!body) { toast("Nhập nội dung văn bản trên bảng trắng trước khi lưu ghi chú.", "error"); return; }
+    setDraft({ body, hasImages: lines.some(line => !!line.img) });
+  }
   async function startNew() {
     if (!board.empty) {
       const ok = await ask({
@@ -27,10 +38,13 @@ export function WhiteboardDialog({ dragProps }: Props) {
     board.clear();
   }
   return (
-    <section className="whiteboard" aria-labelledby="whiteboard-title">
+    <section className="whiteboard" aria-labelledby="whiteboard-title" spellCheck={false}>
       <header className="whiteboard-header" {...dragProps}>
         <h1 id="whiteboard-title">Bảng trắng</h1>
         <div className="whiteboard-actions">
+          <button type="button" className="wb-icon-btn" aria-label="Lưu thành ghi chú" title="Lưu thành ghi chú" onClick={saveAsNote}>
+            <ArrowDownToLine size={19} />
+          </button>
           <button type="button" className="wb-icon-btn" aria-label="Tạo bảng mới" title="Tạo bảng mới" onClick={startNew}>
             <Eraser size={19} />
           </button>
@@ -53,6 +67,10 @@ export function WhiteboardDialog({ dragProps }: Props) {
         />
         <div ref={board.caretRef} className="wb-caret" hidden />
       </div>
+      {draft && <SaveBoardNoteDialog draft={draft} onClosed={() => {
+        setDraft(null);
+        requestAnimationFrame(() => board.editorRef.current?.focus({ preventScroll: true }));
+      }} />}
       {board.zoom && (
         <div
           className="wb-lightbox"

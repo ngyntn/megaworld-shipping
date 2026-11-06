@@ -11,6 +11,7 @@ export type WorkspaceEvent = {
   /** HH:MM, or "" for an all-day item. */
   time: string;
   category: EventCategory;
+  tag?: string;
 };
 
 export type WorkspaceNote = {
@@ -19,6 +20,7 @@ export type WorkspaceNote = {
   title: string;
   body: string;
   kind: NoteKind;
+  tag?: string;
 };
 
 /** Snapshot of one container price taken from the rates table. */
@@ -32,7 +34,10 @@ export type SavedQuote = {
   created: string;
 };
 
+export type WorkspaceTag = { id: string; name: string; color: import("./tags").TagColor };
+
 export type WorkspaceData = {
+  tags: WorkspaceTag[];
   today: string;
   /** YYYY-MM shown in the calendar. */
   month: string;

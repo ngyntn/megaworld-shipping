@@ -12,6 +12,8 @@
 .ws-add { display:inline-flex; align-items:center; gap:6px; }
 .ws-nav, .ws-icon { flex:none; display:flex; align-items:center; justify-content:center; width:32px; height:32px; border:1px solid #dce6f2; border-radius:8px; background:#fff; color:#44546e; cursor:pointer; }
 .ws-nav:hover, .ws-icon:hover { background:#eef4fb; color:#0b3a75; }
+.ws-nav { border-color:transparent; }
+.ws-nav:hover { border-color:#dce6f2; }
 .ws-icon:disabled { opacity:.5; cursor:progress; }
 .ws-empty { margin:0; padding:18px 12px; border:1px dashed #dce6f2; border-radius:10px; text-align:center; font-size:13.5px; color:#5b6b82; }
 
@@ -24,9 +26,10 @@ button.ws-day:hover { border-color:#b9cde6; background:#f6f9fd; }
 button.ws-day:focus-visible { outline:2px solid #1e5fc2; outline-offset:2px; }
 .ws-day.empty { border-color:transparent; background:transparent; }
 .ws-day b { font-weight:600; color:#0f1e36; }
-.ws-day.today { border-color:#1d4e91; background:#eef4fc; }
+.ws-day.today { background:#eef4fc; }
 .ws-day.today b { color:#1d4e91; font-weight:700; }
 .ws-day.selected { border-color:#1d4e91; box-shadow:inset 0 0 0 1px #1d4e91; }
+button.ws-day.today { border-color:#e8eef6; box-shadow:none; background:#eef4fc; }
 .ws-day.drop-target { border-color:#2f8a55; border-style:dashed; background:#f0f9f3; }
 .ws-dots { display:flex; gap:4px; min-height:6px; }
 .ws-dots i { width:6px; height:6px; border-radius:50%; background:#1d4e91; }
@@ -61,6 +64,7 @@ button.ws-day:focus-visible { outline:2px solid #1e5fc2; outline-offset:2px; }
 .ws-notes { display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:12px; }
 .ws-note { padding:14px; border:0; border-radius:12px; display:flex; flex-direction:column; align-items:stretch; gap:6px; min-height:116px; min-width:0; font:inherit; text-align:left; cursor:pointer; transition:box-shadow .15s; }
 .ws-note:hover { box-shadow:0 4px 14px #0a2b5c1f; }
+.ws-note.ws-note-drop-target { outline:2px dashed #315f9c; outline-offset:3px; }
 .ws-note:focus-visible { outline:2px solid #1e5fc2; outline-offset:2px; }
 .ws-note h3 { margin:0; font-size:14px; font-weight:700; color:#0f1e36; }
 .ws-note h3, .ws-note p { overflow-wrap:anywhere; }
@@ -80,7 +84,7 @@ button.ws-day:focus-visible { outline:2px solid #1e5fc2; outline-offset:2px; }
 
 /* Dialogs (event, note, save quote) */
 .ws-dialog { position:fixed; inset:0; margin:auto; width:min(460px,calc(100vw - 32px)); height:fit-content; max-height:calc(100dvh - 40px); padding:22px 24px; border:1px solid #e0e8f1; border-radius:18px; background:#fff; color:#0f1e36; box-shadow:0 24px 90px #0a2b5c30; overflow:visible; opacity:0; transform:translateY(10px) scale(.98); transition:opacity .2s ease, transform .2s cubic-bezier(.2,.8,.2,1); }
-.ws-dialog-lg { width:min(600px,calc(100vw - 32px)); padding:26px 28px; }
+.ws-dialog-lg { width:min(620px,calc(100vw - 32px)); padding:28px 32px; }
 .ws-dialog.is-open { opacity:1; transform:none; }
 .ws-dialog.is-closing { opacity:0; transform:translateY(10px) scale(.98); }
 .ws-dialog::backdrop { background:#0f1e3640; backdrop-filter:blur(3px); }
@@ -92,16 +96,16 @@ button.ws-day:focus-visible { outline:2px solid #1e5fc2; outline-offset:2px; }
 .ws-save-status.error { color:#b3261e; }
 .ws-note-delete:hover:not(:disabled) { background:#fcf0ec; color:#b3261e; }
 .ws-note-delete:disabled { opacity:.5; cursor:progress; }
-.ws-note-fields { display:flex; flex-direction:column; gap:14px; min-width:0; margin:0; padding:0; border:0; }
+.ws-note-fields { display:flex; flex-direction:column; gap:6px; min-width:0; margin:0; padding:0; border:0; }
 .ws-dialog-lg .op-field input { font-size:15px; }
 .ws-dialog-lg textarea { min-height:190px; font-size:14.5px; }
 .ws-kinds { display:flex; flex-wrap:wrap; align-items:center; gap:8px; }
 .ws-kinds-label { width:100%; font-size:11.5px; font-weight:600; color:#44546e; }
-.ws-kind { position:relative; padding:7px 14px; border:1px solid transparent; border-radius:6px; background:var(--ws-fill); font-size:13.5px; font-weight:500; color:#33425a; cursor:pointer; user-select:none; transition:border-color .15s, color .15s; }
+.ws-kind { position:relative; padding:7px 14px; border:0; border-radius:6px; background:var(--ws-fill); font:inherit; font-size:13.5px; font-weight:500; color:#33425a; cursor:pointer; user-select:none; transition:background-color .15s, color .15s; }
 .ws-kind:hover { color:var(--ws-ink); }
 .ws-kind input { position:absolute; inset:0; margin:0; opacity:0; cursor:pointer; }
-.ws-kind:has(input:checked) { border-color:var(--ws-ink); color:var(--ws-ink); font-weight:600; }
-.ws-kind:has(input:focus-visible) { outline:2px solid #1e5fc2; outline-offset:2px; }
+.ws-kind[aria-pressed="true"] { background:var(--ws-ink); color:#fff; }
+.ws-kind:focus-visible { outline:2px solid #1e5fc2; outline-offset:2px; }
 .ws-dialog-hint { margin:0; font-size:13.5px; color:#5b6b82; }
 .ws-form { display:flex; flex-direction:column; gap:12px; }
 .ws-form textarea { border:0; padding:2px 0; font:inherit; font-size:14px; line-height:1.55; color:#0f1e36; background:transparent; outline:none; resize:vertical; min-height:96px; }
@@ -116,3 +120,36 @@ button.ws-day:focus-visible { outline:2px solid #1e5fc2; outline-offset:2px; }
 .ws-choice:disabled { opacity:.6; cursor:progress; }
 .rate-row-actions .ic:disabled { opacity:.5; cursor:progress; }
 @media (prefers-reduced-motion:reduce) { .ws-dialog { transition:none; } }
+
+.ws-tag-picker { border:0; padding:0; margin:0; min-width:0; }
+.ws-tag-picker legend { padding:0; margin-bottom:10px; font-size:13px; font-weight:600; color:#44546e; }
+.ws-tag-picker .ws-hint { margin:10px 0 0; }
+.ws-kind { background:var(--ws-fill,#edf1f6); overflow-wrap:anywhere; }
+.ws-custom-tag { background:var(--ws-fill); color:var(--ws-ink); overflow-wrap:anywhere; }
+.ws-dots i.ws-tag-dot { background:var(--ws-dot); width:8px; height:8px; }
+.ws-dots i[draggable="true"], .ws-event[draggable="true"] { cursor:grab; }
+.ws-tag-list { display:flex; flex-wrap:wrap; gap:10px; }
+.ws-managed-tag { display:flex; align-items:center; max-width:100%; padding:11px 14px; border:0; border-radius:10px; background:var(--ws-fill); color:var(--ws-ink); font:inherit; font-size:13px; text-align:left; cursor:pointer; }
+.ws-managed-tag span { overflow-wrap:anywhere; min-width:0; }
+.ws-managed-tag:focus-visible { outline:2px solid #315f9c; outline-offset:3px; }
+.ws-tag-form { padding:18px; border:1px solid #e0e8f1; border-radius:12px; background:#f9fbfe; }
+.ws-tag-form-head { display:flex; align-items:center; justify-content:space-between; gap:12px; }
+.ws-tag-form-head h3 { margin:0; font-size:14px; font-weight:600; color:#0a2b5c; }
+.ws-tag-delete:hover:not(:disabled) { color:#b3261e; background:#fcf0ec; border-color:#f0c9c4; }
+.ws-color-palette { display:flex; flex-wrap:wrap; gap:10px; }
+.ws-color-palette label { position:relative; display:grid; place-items:center; width:34px; height:34px; border:2px solid transparent; border-radius:50%; cursor:pointer; color:#33425a; }
+.ws-color-palette label:has(input:checked) { border-color:#315f9c; }
+.ws-color-palette label:has(input:focus-visible) { outline:2px solid #315f9c; outline-offset:3px; }
+.ws-color-palette input { position:absolute; inset:0; width:100%; height:100%; opacity:0; cursor:pointer; }
+.ws-tag-form-actions { display:flex; justify-content:flex-end; gap:10px; }
+.ws-time-picker { min-width:0; display:flex; flex-direction:column; gap:10px; }
+.ws-time-parts { display:grid; grid-template-columns:minmax(0,1fr) auto minmax(0,1fr); gap:10px; align-items:center; }
+.ws-note-fields .ws-note-title-input { width:100%; border:0; border-radius:0; outline:none; box-shadow:none; padding:6px 0 0; background:transparent; font:inherit; font-size:16px; font-weight:600; line-height:1.7; color:#0f1e36; }
+.ws-note-fields .ws-note-title-input::placeholder { color:#91a0b4; }
+.ws-note-fields .ws-note-body-input { width:100%; min-height:280px; max-height:45dvh; border:0; outline:none; padding:6px 0; font-size:16px; line-height:1.7; }
+.ws-dialog:has(.ws-note-fields) { overflow-y:auto; }
+@media (max-width:600px) {
+  .ws-dialog-lg { padding:22px 20px; }
+  .ws-note-fields .ws-note-body-input { min-height:210px; }
+  .ws-head-actions { flex-wrap:wrap; }
+}

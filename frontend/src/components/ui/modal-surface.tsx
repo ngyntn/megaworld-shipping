@@ -8,11 +8,12 @@ type Props = {
   children: React.ReactNode;
   className: string;
   label: string;
+  initialFocus?: string;
   /** Called once the exit animation has finished; the owner unmounts the modal here. */
   onClosed: () => void;
 };
 
-export function ModalSurface({ children, className, label, onClosed }: Props) {
+export function ModalSurface({ children, className, label, onClosed, initialFocus }: Props) {
   const ref = useRef<HTMLDialogElement>(null);
   const closing = useRef(false);
   const pressedBackdrop = useRef(false);
@@ -34,6 +35,7 @@ export function ModalSurface({ children, className, label, onClosed }: Props) {
     const dialog = ref.current!;
     const previous = document.activeElement as HTMLElement | null;
     dialog.showModal();
+    if (initialFocus) dialog.querySelector<HTMLElement>(initialFocus)?.focus({ preventScroll: true });
     // showModal() focuses the first control; the browser may scroll the dialog to reveal it
     // while the panel is still off-screen. Reset that so the slide starts from the edge.
     dialog.scrollTo(0, 0);
@@ -46,7 +48,7 @@ export function ModalSurface({ children, className, label, onClosed }: Props) {
       dialog.close();
       previous?.focus({ preventScroll: true });
     };
-  }, []);
+  }, [initialFocus]);
 
   return (
     <ModalDismissContext value={dismiss}>

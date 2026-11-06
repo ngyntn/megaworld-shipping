@@ -1,14 +1,13 @@
 "use client";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Trash2 } from "lucide-react";
 import { useConfirm } from "@/components/ui/confirm-provider";
 import { useModalDismiss } from "@/components/ui/modal-context";
-import { Field } from "@/features/operations/components/shared";
+import { TagPicker } from "./tag-picker";
 import { deleteWorkspaceItem } from "../actions";
 import { useNoteAutosave, type AutosaveStatus } from "../hooks/use-note-autosave";
 import { useWorkspaceAction } from "../hooks/use-workspace-action";
-import { noteKinds, type NoteKind, type WorkspaceNote } from "../types";
-import { noteKindMeta } from "../utils";
+import type { NoteKind, WorkspaceTag, WorkspaceNote } from "../types";
 import { WorkspaceDialog } from "./workspace-dialog";
 
 const DEFAULT_KIND: NoteKind = "reminder";
@@ -20,7 +19,7 @@ const statusText: Record<AutosaveStatus, string> = {
 };
 
 /** `note` undefined = new note. Every change is saved automatically; there is no save button. */
-export function NoteDialog({ note, onClosed }: { note?: WorkspaceNote; onClosed: () => void }) {
+export function NoteDialog({ note, tags, onClosed }: { tags: WorkspaceTag[]; note?: WorkspaceNote; onClosed: () => void }) {
   const autosave = useNoteAutosave(note?.id ?? "");
   const [deleting, setDeleting] = useState(false);
   return (
@@ -35,7 +34,7 @@ export function NoteDialog({ note, onClosed }: { note?: WorkspaceNote; onClosed:
         </>
       }
     >
-      <NoteFields note={note} disabled={deleting} onChange={autosave.change} onSubmit={autosave.flush} />
+      <NoteFields tags={tags} note={note} disabled={deleting} onChange={autosave.change} onSubmit={autosave.flush} />
     </WorkspaceDialog>
   );
 }
@@ -61,19 +60,24 @@ function DeleteNote({ autosave, onPending }: { autosave: Autosave; onPending: (p
 }
 
 type FieldsProps = {
+  tags: WorkspaceTag[];
   note?: WorkspaceNote;
   disabled: boolean;
   onChange: Autosave["change"];
   onSubmit: () => void;
 };
 
-function NoteFields({ note, disabled, onChange, onSubmit }: FieldsProps) {
+function NoteFields({ note, tags, disabled, onChange, onSubmit }: FieldsProps) {
+  const formRef = useRef<HTMLFormElement>(null);
+  const bodyRef = useRef<HTMLTextAreaElement>(null);
   const read = (form: HTMLFormElement) => {
     const data = new FormData(form);
-    return { title: String(data.get("title") ?? ""), body: String(data.get("body") ?? ""), kind: String(data.get("kind") ?? DEFAULT_KIND) as NoteKind };
+    return { title: String(data.get("title") ?? ""), body: String(data.get("body") ?? ""), tag: String(data.get("tag") ?? ""), kind: note?.kind ?? DEFAULT_KIND };
   };
   return (
     <form
+      ref={formRef}
+      spellCheck={false}
       className="ws-form"
       onChange={(e) => onChange(read(e.currentTarget))}
       onSubmit={(e) => {
@@ -82,21 +86,13 @@ function NoteFields({ note, disabled, onChange, onSubmit }: FieldsProps) {
       }}
     >
       <fieldset className="ws-note-fields" disabled={disabled}>
-        <Field label="Tiêu đề">
-          <input name="title" defaultValue={note?.title} maxLength={120} placeholder="Ví dụ: Nhắc việc" autoFocus={!note} />
-        </Field>
-        <Field label="Nội dung">
-          <textarea name="body" defaultValue={note?.body} rows={9} maxLength={2000} placeholder="Mỗi ý một dòng…" />
-        </Field>
-        <div className="ws-kinds" role="radiogroup" aria-label="Loại ghi chú">
-          <span className="ws-kinds-label">Loại ghi chú</span>
-          {noteKinds.map((kind) => (
-            <label key={kind} className={`ws-kind ${kind}`}>
-              <input type="radio" name="kind" value={kind} defaultChecked={(note?.kind ?? DEFAULT_KIND) === kind} />
-              {noteKindMeta[kind].label}
-            </label>
-          ))}
-        </div>
+        <input data-initial-focus className="ws-note-title-input" aria-label="Tiêu đề" name="title" defaultValue={note?.title} maxLength={120} placeholder="Nhập tiêu đề" autoFocus={!note} onKeyDown={e => {
+          if (e.key === "Enter" && !e.nativeEvent.isComposing) { e.preventDefault(); bodyRef.current?.focus(); }
+        }} />
+        <textarea ref={bodyRef} className="ws-note-body-input" aria-label="Nội dung" name="body" defaultValue={note?.body} rows={11} maxLength={2000} placeholder="Nhập nội dung, mỗi ý một dòng…" />
+        <TagPicker tags={tags} value={note?.tag} onValueChange={tag => {
+          if (formRef.current) onChange({ ...read(formRef.current), tag });
+        }} />
       </fieldset>
     </form>
   );

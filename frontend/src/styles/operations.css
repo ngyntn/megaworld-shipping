@@ -132,6 +132,16 @@
   width: 100%;
   font-size: 13.5px;
 }
+/* Keep borders attached to sticky headers so scrolled rows cannot show through. */
+.op-master,
+.op-schedules {
+  border-collapse: separate;
+  border-spacing: 0;
+}
+.op-master thead,
+.op-schedules thead {
+  background: #f2f6fb;
+}
 .op-table th {
   background: #f2f6fb;
   font-size: 12px;
